@@ -1,0 +1,3299 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--  Mobile redirect: 80 -->
+<!--esi
+
+<esi:assign name="is_mobile" value="0" />
+<esi:choose>
+  <esi:when test="$(done)!='1'">
+    <esi:assign name="done" value="0"/>
+  </esi:when>
+</esi:choose>
+
+<esi:assign name="query_param" value="''"/>
+<esi:choose>
+    <esi:when test="$(QUERY_STRING)">
+        <esi:assign name="query_param">'?'+$(QUERY_STRING)</esi:assign>
+    </esi:when>
+</esi:choose>
+
+<esi:choose>
+  <esi:when test="$(HTTP_USER_AGENT) matches_i '''SCH-I535|SPH-L710|SGH-N064|SGH-N035|SGH-T999|SGH-I747|GT-I9305|GT-I9300|android.+mobile|iphone|ipod|webos|blackberry.+webkit.+mobile|htc|opera\ mini|operamini|iemobile|opera\ mobi|lge|lg|palm|samsung|nokia|windows\ phone|windows\ ce|bb10|blackberry|Mobile.+Firefox|tizen.+mobile'''">
+    <esi:assign name="is_mobile" value="1" />
+  </esi:when>
+</esi:choose>
+
+<esi:choose>
+  <esi:when test="$(HTTP_USER_AGENT) matches_i '''SAMSUNG\ SM-T'''">
+    <esi:assign name="is_mobile" value="0" />
+  </esi:when>
+</esi:choose>
+
+<esi:choose>
+  <esi:when test="$(is_mobile) == '1' && $(HTTP_HOST) has 'huffingtonpost.com' && $(REQUEST_PATH) matches_i '/jobs'">
+    <esi:assign name="done" value="1"/>
+  </esi:when>
+</esi:choose>
+
+<esi:choose>
+  <esi:when test="$(is_mobile) == '1' && $(HTTP_HOST) has 'huffingtonpost.com' && $(REQUEST_PATH) matches_i '/hill/signup\.html'">
+    <esi:assign name="done" value="1"/>
+  </esi:when>
+</esi:choose>
+
+<esi:choose>
+  <esi:when test="($exists($(QUERY_STRING{'m'})) && $(QUERY_STRING{'m'}) == 'false')
+                    && $(is_mobile)=='1'">
+      $add_header('Set-Cookie','mobileview=false; path=/;')
+      $set_redirect('http://www.huffingtonpost.com'+$(REQUEST_PATH))
+      <esi:assign name="done" value="1"/>
+  </esi:when>
+</esi:choose>
+
+<esi:choose>
+  <esi:when test="($exists($(QUERY_STRING{'m'})) && $(QUERY_STRING{'m'}) == 'true')
+                    && $(is_mobile)=='1'">
+      $add_header('Set-Cookie','mobileview=true; path=/;')
+      <esi:assign name="ignore_mobile_cookie" value="1"/>
+  </esi:when>
+</esi:choose>
+
+<esi:choose>
+  <esi:when test="($exists($(QUERY_STRING{'tm'})) && $(QUERY_STRING{'tm'}) == 'false')
+                    && $(is_mobile)=='1'">
+      <esi:assign name="done" value="1"/>
+  </esi:when>
+</esi:choose>
+
+<esi:choose>
+  <esi:when test="$(is_mobile) == '1' && $(HTTP_HOST) has 'huffingtonpost.com' && $(REQUEST_PATH) matches_i 'special\/disney_travel'">
+    $set_redirect('http://m.news.travel.aol.com/disney/')
+    <esi:assign name="done" value="1"/>
+  </esi:when>
+</esi:choose>
+<esi:choose>
+  <esi:when test="( $(ignore_mobile_cookie) == '1' || !$exists($(HTTP_COOKIE{'mobileview'}) ) || $(HTTP_COOKIE{'mobileview'})=='true' ) && $(is_mobile) == '1' && $(done)=='0'">
+    <esi:choose>
+      <esi:when test="!$exists($(HTTP_COOKIE{'mobileview'}))">
+        $add_header('Set-Cookie','mobileview=true; path=/;')
+      </esi:when>
+    </esi:choose>
+    <esi:choose>
+      <esi:when test="$(REQUEST_PATH) matches_i '/?([0-9]+)/([0-9]+)/([0-9]+)/([^/]+)_([0-9]+)\.html#(.+)$' ">
+        <esi:assign name="redirect_to">'http://m.huffpost.com/us/entry/'+$(MATCHES{5})+'#$(MATCHES{6})'+$(query_param)</esi:assign>
+      </esi:when>
+      <esi:when test="$(REQUEST_PATH) matches_i '/?([0-9]+)/([0-9]+)/([0-9]+)/([^/]+)_([0-9]+)\.html' ">
+        <esi:assign name="redirect_to">'http://m.huffpost.com/us/entry/'+$(MATCHES{5})+$(query_param)</esi:assign>
+      </esi:when>
+      <esi:when test="$(REQUEST_PATH) matches_i '/([^/]+)/([^/]+)_([0-9]+)\.html'">
+        <esi:assign name="redirect_to">'http://m.huffpost.com/us/entry/'+$(MATCHES{3})+$(query_param)</esi:assign>
+      </esi:when>
+      <esi:when test="$(REQUEST_PATH) matches_i '/(news|tag|actualites)/([a-z0-9-_]+)' ">
+        <esi:assign name="redirect_to">'http://m.huffpost.com/us/news/'+$(MATCHES{2})+'/'+$(query_param)</esi:assign>
+      </esi:when>
+      <esi:when test="$(REQUEST_PATH) matches_i '/newsletter/([a-z0-9-_]+)'">
+        <esi:assign name="redirect_to">'http://m.huffpost.com/us/?pop=nls&nls='+ $(MATCHES{1})</esi:assign>
+      </esi:when>
+      <esi:when test="$(REQUEST_PATH) matches_i '/imageblog'">
+        <esi:assign name="redirect_to">'http://m.huffpost.com/us/news/imageblog/'+$(query_param)</esi:assign>
+      </esi:when>
+      <esi:when test="$(REQUEST_PATH) matches_i '/thirdmetric'">
+        <esi:assign name="redirect_to">'http://m.huffpost.com/us/news/third-metric/'+$(query_param)</esi:assign>
+      </esi:when>
+      <esi:when test="$(REQUEST_PATH) matches_i '/p/horoscopos-([a-z]+)\.html' ">
+        <esi:assign name="redirect_to">'http://m.huffpost.com/us/horoscopos/'+$(MATCHES{1})+$(query_param)</esi:assign>
+      </esi:when>
+      <esi:when test="$(REQUEST_PATH) matches_i '^\/(subscription|users\/notifications|terms)' ">
+        <esi:assign name="done" value="1"/>
+      </esi:when>
+      <esi:when test="$(REQUEST_PATH) matches_i '^\/([a-z0-9-_]{2,})' ">
+                  <esi:assign name="redirect_to">'http://m.huffpost.com/us/vertical/'+$(MATCHES{1})+'/'+$(query_param)</esi:assign>
+              </esi:when>
+      <esi:when test="$is_empty($(REQUEST_PATH)) || $(REQUEST_PATH) =='/'">
+        <esi:choose>
+          <esi:when test="($(GEO{'country_code'}) == 'AU')">
+            <esi:assign name="redirect_to">'http://m.huffpost.com/au'+$(query_param)</esi:assign>
+          </esi:when>
+          <esi:otherwise>
+            <esi:assign name="redirect_to">'http://m.huffpost.com/us'+$(query_param)</esi:assign>
+          </esi:otherwise>
+        </esi:choose>
+      </esi:when>
+    </esi:choose>
+    <esi:choose>
+      <esi:when test="$exists($(redirect_to)) && !$is_empty($(redirect_to))">
+        $set_redirect($(redirect_to))
+      </esi:when>
+    </esi:choose>
+    <esi:assign name="done" value="1"/>
+  </esi:when>
+</esi:choose>
+-->
+<!--esi
+<esi:assign name="is_facebook_client" value="0" />
+<esi:choose>
+  <esi:when test="$(HTTP_USER_AGENT) has 'facebookexternalhit' && $(REQUEST_PATH) has 'ogpublishing/'">
+  	<esi:assign name="is_facebook_client" value="1" />
+  </esi:when>
+</esi:choose>
+
+<esi:choose>
+  <esi:when test="$(is_facebook_client) == 0 && $(REQUEST_PATH) has 'ogpublishing/'">
+  	$set_response_code(301)
+  	$add_header('Location', 'http://www.huffingtonpost.com/science/')
+  </esi:when>
+</esi:choose>
+-->
+<!--esi
+<esi:assign name="ads_ord" value="$rand()" />
+<esi:assign name="is_aol_referer" value="0" />
+<esi:choose>
+  <esi:when test="$(HTTP_REFERER) has '.aol.com'">
+    <esi:assign name="is_aol_referer" value="1" />
+  </esi:when>
+</esi:choose>
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" xml:lang="en" lang="en" xmlns:fb="http://www.facebook.com/2008/fbml">
+
+<head>
+    
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+	<title>Science News, Discoveries and Breakthrough Scientific Research - HuffPost Science</title>
+	<meta name="Description" content="Join the discussion with top scientists on the latest news in spaceflight, brain/body research, evolution and the influence of science on culture." />
+	<meta name="Keywords" content="science,science news,science blog" />
+	<meta name="robots" content="noodp,noydir" />
+	<meta http-equiv="Content-Language" content="en_US" />
+	<meta property="og:site_name" content="The Huffington Post"/>
+	<meta property="og:type" content="blog"/>
+
+
+	<meta property="fb:app_id" content="46744042133" />
+<link rel="canonical" href="http://www.huffingtonpost.com/science/" />
+<link rel="alternate" href="android-app://com.huffingtonpost.android/http/www.huffingtonpost.com/science/"/>
+<link rel="alternate" href="ios-app://306621789/huffpostnews/?editionID=us&sectionName=science&sectionTitle=Science&sectionType=vertical"/>
+<link rel="alternate" media="only screen and (max-width: 640px)" href="http://m.huffpost.com/us/vertical/science/" >
+	<link rel="alternate" type="application/rss+xml" title="The Full Feed" href="http://feeds.huffingtonpost.com/huffingtonpost/raw_feed" />
+	<link rel="alternate" type="application/rss+xml" title="Latest News" href="http://feeds.huffingtonpost.com/huffingtonpost/LatestNews" />
+	<link rel="alternate" type="application/rss+xml" title="The Blog" href="http://feeds.huffingtonpost.com/huffingtonpost/TheBlog" />
+	<link rel="alternate" type="application/rss+xml" title="Featured Posts" href="http://feeds.huffingtonpost.com/FeaturedPosts" />
+	<link rel="alternate" type="application/rss+xml" title="Original Feed" href="http://www.huffingtonpost.com/feeds/original_posts/index.xml" />
+	<link rel="alternate" type="application/rss+xml" title="Science Feed" href="http://www.huffingtonpost.com/feeds/verticals/science/index.xml" />
+	<link rel="alternate" type="application/rss+xml" title="Science Blog" href="http://www.huffingtonpost.com/feeds/verticals/science/blog.xml" />
+	<link rel="alternate" type="application/rss+xml" title="Science News" href="http://www.huffingtonpost.com/feeds/verticals/science/news.xml" />
+<!--esi
+<esi:choose>
+  <esi:when test="$(HTTP_USER_AGENT) has 'Windows NT 6.2'">
+    <esi:text>
+	<meta name="msapplication-TileColor" content="#2D695A"/> 
+	<meta name="msapplication-TileImage" content="/images/windows8_pin_en.png"/>
+    </esi:text>
+  </esi:when>
+</esi:choose>
+<esi:choose>
+  <esi:when test="$(HTTP_USER_AGENT) has 'Trident/5.0'">
+    <esi:text>
+<link rel="shortcut icon" href="/images/sitemode/verts/science.ico" />
+<meta name="msapplication-starturl" content="/science/" />
+	<meta name="msapplication-task" content="name=Home;action-uri=http://www.huffingtonpost.com;icon-uri=/favicon.ico" />
+    <meta name="msapplication-task" content="name=Politics;action-uri=http://www.huffingtonpost.com/politics/;icon-uri=http://s.huffpost.com:80/images/sitemode/verts/politics.ico" />
+    <meta name="msapplication-task" content="name=Business;action-uri=http://www.huffingtonpost.com/business/;icon-uri=http://s.huffpost.com:80/images/sitemode/verts/business.ico" />
+    <meta name="msapplication-task" content="name=Media;action-uri=http://www.huffingtonpost.com/media/;icon-uri=http://s.huffpost.com:80/images/sitemode/verts/media.ico" />
+    <meta name="msapplication-task" content="name=Entertainment;action-uri=http://www.huffingtonpost.com/entertainment/;icon-uri=http://s.huffpost.com:80/images/sitemode/verts/entertainment.ico" />
+    <meta name="msapplication-task" content="name=Sports;action-uri=http://www.huffingtonpost.com/sports/;icon-uri=http://s.huffpost.com:80/images/sitemode/verts/sports.ico" />
+    <meta name="msapplication-task" content="name=Comedy;action-uri=http://www.huffingtonpost.com/comedy/;icon-uri=http://s.huffpost.com:80/images/sitemode/verts/comedy.ico" />
+    </esi:text>
+  </esi:when>
+  <esi:otherwise>
+    <esi:text>	<link rel="shortcut icon" href="/favicon.ico" /></esi:text>
+  </esi:otherwise>
+</esi:choose>
+--><link rel="stylesheet" href="http://s.huffpost.com/assets/css.php?v=1474481690&f=grid%2Fvertical_fp_grid.css%2Chp_modules%2Fmodule.main-dl.css%2Chp_modules%2Fmodule.blogger-headshot-bl.css%2Cverticals%2Fscience.css%2Cpage_type%2Ffrontpages.css%2Chp_modules%2Fmodule.sponsor-widgets.css%2Cmaster.css%2Cfonts%2Fopensans-condbold%2Fstylesheet.css%2Ctopnav_new%2Fall_pages.css%2Ctopnav_new%2Ftop_nav.css%2Ctopnav_new%2Fmodule.edition_nav.css%2Cbasic.css" type="text/css" media="screen" /><link rel="stylesheet" href="http://s.huffpost.com/assets/css.php?v=1474481690&f=verticals%2Fcolor_scheme.css%2Cadd%2Ffront.css%2Cbuttons.css%2Cmost_popular.css%2Ccommercial.css%2Chuff_promo.css%2Csnp_friends.css%2Csnn-header.css%2Chp_modules%2Fmodule.splash_slideshow.css%2Chp_modules%2Fmodule.apps_feeds.css%2Chp_modules%2Fmodule.most_popular_celebrity.css%2Chufflists.css%2Csignup_modal.css%2Cdirect_message.css%2Cbadges_v2.css" type="text/css" media="screen" /><link rel="stylesheet" href="http://s.huffpost.com/assets/css.php?v=1474481690&f=hp_modules%2Ffacebook.css%2Cuser_levels.css%2Ctwitter_splash.css%2Cbing.css%2Cgrouping.css%2Cmodal_window.css%2Chp_modules%2Fmodule.bubble.css" type="text/css" media="screen" /><link rel="stylesheet" href="http://s.huffpost.com/assets/css.php?v=1474481690&f=email_share.css%2Csocial-navbar.css%2Chp_modules%2Fmodule.bubble-tags.css%2Chp_modules%2Fmodule.fb_like_button.css%2Csearch_autocomplete.css%2Cap_wires_scroll.css%2Cmod-follow.css%2Clogos.css" type="text/css" media="screen" /><!--esi <esi:choose><esi:when test="$(HTTP_USER_AGENT{'browser'})=='MSIE' & $(HTTP_USER_AGENT{'version'}) matches '^6\.[0-9]+' & !($(HTTP_USER_AGENT) has_i 'Trident')"><link rel="stylesheet" href="http://s.huffpost.com/assets/css.php?v=1474481690&f=ie.css%2Cie6.css%2Cconversations%2Fapp.css" type="text/css" media="screen" /></esi:when></esi:choose> --><!--esi <esi:choose><esi:when test="$(HTTP_USER_AGENT{'browser'})=='MSIE' & $(HTTP_USER_AGENT{'version'}) matches '^7\.[0-9]+' & !($(HTTP_USER_AGENT) has_i 'Trident')"><link rel="stylesheet" href="http://s.huffpost.com/assets/css.php?v=1474481690&f=ie.css%2Cie7.css%2Cconversations%2Fapp.css%2Cconversations%2Fie.css" type="text/css" media="screen" /></esi:when></esi:choose> --><!--esi <esi:choose><esi:when test="$(HTTP_USER_AGENT) has_i 'Trident/4.0'"><link rel="stylesheet" href="http://s.huffpost.com/assets/css.php?v=1474481690&f=ie.css%2Cie8.css%2Cconversations%2Fapp.css%2Cconversations%2Fie.css" type="text/css" media="screen" /></esi:when></esi:choose> --><!--esi <esi:choose><esi:when test="$(HTTP_USER_AGENT) has_i 'Trident/5.0'"><link rel="stylesheet" href="http://s.huffpost.com/assets/css.php?v=1474481690&f=ie9.css" type="text/css" media="screen" /></esi:when></esi:choose> --><!--esi <esi:choose><esi:when test="$(HTTP_USER_AGENT{'browser'})=='MSIE' & $(HTTP_USER_AGENT{'version'}) matches '^7\.[0-9]+' & !($(HTTP_USER_AGENT) has_i 'Trident')"><link rel="stylesheet" href="http://s.huffpost.com/assets/css.php?v=1474481690&f=topnav_new%2Fie7.css" type="text/css" media="screen" /></esi:when></esi:choose> --><!--esi <esi:choose><esi:when test="$(HTTP_USER_AGENT) has_i 'Trident/4.0'"><link rel="stylesheet" href="http://s.huffpost.com/assets/css.php?v=1474481690&f=topnav_new%2Fie8.css" type="text/css" media="screen" /></esi:when></esi:choose> --><!--esi <esi:choose><esi:when test="$(HTTP_USER_AGENT) has_i 'Trident/5.0'"><link rel="stylesheet" href="http://s.huffpost.com/assets/css.php?v=1474481690&f=topnav_new%2Fie9.css" type="text/css" media="screen" /></esi:when></esi:choose> -->
+	        <!-- RUM header -->
+<script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={xpid:"Vg4HV1FADAMAUFlSBg=="};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var o=e[n]={exports:{}};t[n][0].call(o.exports,function(e){var o=t[n][1][e];return r(o||e)},o,o.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<n.length;o++)r(n[o]);return r}({1:[function(t,e,n){function r(t){try{s.console&&console.log(t)}catch(e){}}var o,i=t("ee"),a=t(15),s={};try{o=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(s.console=!0,o.indexOf("dev")!==-1&&(s.dev=!0),o.indexOf("nr_dev")!==-1&&(s.nrDev=!0))}catch(c){}s.nrDev&&i.on("internal-error",function(t){r(t.stack)}),s.dev&&i.on("fn-err",function(t,e,n){r(n.stack)}),s.dev&&(r("NR AGENT IN DEVELOPMENT MODE"),r("flags: "+a(s,function(t,e){return t}).join(", ")))},{}],2:[function(t,e,n){function r(t,e,n,r,o){try{d?d-=1:i("err",[o||new UncaughtException(t,e,n)])}catch(s){try{i("ierr",[s,(new Date).getTime(),!0])}catch(c){}}return"function"==typeof f&&f.apply(this,a(arguments))}function UncaughtException(t,e,n){this.message=t||"Uncaught error with no additional information",this.sourceURL=e,this.line=n}function o(t){i("err",[t,(new Date).getTime()])}var i=t("handle"),a=t(16),s=t("ee"),c=t("loader"),f=window.onerror,u=!1,d=0;c.features.err=!0,t(1),window.onerror=r;try{throw new Error}catch(l){"stack"in l&&(t(8),t(7),"addEventListener"in window&&t(5),c.xhrWrappable&&t(9),u=!0)}s.on("fn-start",function(t,e,n){u&&(d+=1)}),s.on("fn-err",function(t,e,n){u&&(this.thrown=!0,o(n))}),s.on("fn-end",function(){u&&!this.thrown&&d>0&&(d-=1)}),s.on("internal-error",function(t){i("ierr",[t,(new Date).getTime(),!0])})},{}],3:[function(t,e,n){t("loader").features.ins=!0},{}],4:[function(t,e,n){function r(t){}if(window.performance&&window.performance.timing&&window.performance.getEntriesByType){var o=t("ee"),i=t("handle"),a=t(8),s=t(7),c="learResourceTimings",f="addEventListener",u="resourcetimingbufferfull",d="bstResource",l="resource",p="-start",h="-end",m="fn"+p,w="fn"+h,v="bstTimer",y="pushState";t("loader").features.stn=!0,t(6);var g=NREUM.o.EV;o.on(m,function(t,e){var n=t[0];n instanceof g&&(this.bstStart=Date.now())}),o.on(w,function(t,e){var n=t[0];n instanceof g&&i("bst",[n,e,this.bstStart,Date.now()])}),a.on(m,function(t,e,n){this.bstStart=Date.now(),this.bstType=n}),a.on(w,function(t,e){i(v,[e,this.bstStart,Date.now(),this.bstType])}),s.on(m,function(){this.bstStart=Date.now()}),s.on(w,function(t,e){i(v,[e,this.bstStart,Date.now(),"requestAnimationFrame"])}),o.on(y+p,function(t){this.time=Date.now(),this.startPath=location.pathname+location.hash}),o.on(y+h,function(t){i("bstHist",[location.pathname+location.hash,this.startPath,this.time])}),f in window.performance&&(window.performance["c"+c]?window.performance[f](u,function(t){i(d,[window.performance.getEntriesByType(l)]),window.performance["c"+c]()},!1):window.performance[f]("webkit"+u,function(t){i(d,[window.performance.getEntriesByType(l)]),window.performance["webkitC"+c]()},!1)),document[f]("scroll",r,!1),document[f]("keypress",r,!1),document[f]("click",r,!1)}},{}],5:[function(t,e,n){function r(t){for(var e=t;e&&!e.hasOwnProperty(u);)e=Object.getPrototypeOf(e);e&&o(e)}function o(t){s.inPlace(t,[u,d],"-",i)}function i(t,e){return t[1]}var a=t("ee").get("events"),s=t(17)(a),c=t("gos"),f=XMLHttpRequest,u="addEventListener",d="removeEventListener";e.exports=a,"getPrototypeOf"in Object?(r(document),r(window),r(f.prototype)):f.prototype.hasOwnProperty(u)&&(o(window),o(f.prototype)),a.on(u+"-start",function(t,e){if(t[1]){var n=t[1];if("function"==typeof n){var r=c(n,"nr@wrapped",function(){return s(n,"fn-",null,n.name||"anonymous")});this.wrapped=t[1]=r}else"function"==typeof n.handleEvent&&s.inPlace(n,["handleEvent"],"fn-")}}),a.on(d+"-start",function(t){var e=this.wrapped;e&&(t[1]=e)})},{}],6:[function(t,e,n){var r=t("ee").get("history"),o=t(17)(r);e.exports=r,o.inPlace(window.history,["pushState","replaceState"],"-")},{}],7:[function(t,e,n){var r=t("ee").get("raf"),o=t(17)(r),i="equestAnimationFrame";e.exports=r,o.inPlace(window,["r"+i,"mozR"+i,"webkitR"+i,"msR"+i],"raf-"),r.on("raf-start",function(t){t[0]=o(t[0],"fn-")})},{}],8:[function(t,e,n){function r(t,e,n){t[0]=a(t[0],"fn-",null,n)}function o(t,e,n){this.method=n,this.timerDuration="number"==typeof t[1]?t[1]:0,t[0]=a(t[0],"fn-",this,n)}var i=t("ee").get("timer"),a=t(17)(i),s="setTimeout",c="setInterval",f="clearTimeout",u="-start",d="-";e.exports=i,a.inPlace(window,[s,"setImmediate"],s+d),a.inPlace(window,[c],c+d),a.inPlace(window,[f,"clearImmediate"],f+d),i.on(c+u,r),i.on(s+u,o)},{}],9:[function(t,e,n){function r(t,e){d.inPlace(e,["onreadystatechange"],"fn-",s)}function o(){var t=this,e=u.context(t);t.readyState>3&&!e.resolved&&(e.resolved=!0,u.emit("xhr-resolved",[],t)),d.inPlace(t,w,"fn-",s)}function i(t){v.push(t),h&&(g=-g,b.data=g)}function a(){for(var t=0;t<v.length;t++)r([],v[t]);v.length&&(v=[])}function s(t,e){return e}function c(t,e){for(var n in t)e[n]=t[n];return e}t(5);var f=t("ee"),u=f.get("xhr"),d=t(17)(u),l=NREUM.o,p=l.XHR,h=l.MO,m="readystatechange",w=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"],v=[];e.exports=u;var y=window.XMLHttpRequest=function(t){var e=new p(t);try{u.emit("new-xhr",[e],e),e.addEventListener(m,o,!1)}catch(n){try{u.emit("internal-error",[n])}catch(r){}}return e};if(c(p,y),y.prototype=p.prototype,d.inPlace(y.prototype,["open","send"],"-xhr-",s),u.on("send-xhr-start",function(t,e){r(t,e),i(e)}),u.on("open-xhr-start",r),h){var g=1,b=document.createTextNode(g);new h(a).observe(b,{characterData:!0})}else f.on("fn-end",function(t){t[0]&&t[0].type===m||a()})},{}],10:[function(t,e,n){function r(t){var e=this.params,n=this.metrics;if(!this.ended){this.ended=!0;for(var r=0;r<d;r++)t.removeEventListener(u[r],this.listener,!1);if(!e.aborted){if(n.duration=(new Date).getTime()-this.startTime,4===t.readyState){e.status=t.status;var i=o(t,this.lastSize);if(i&&(n.rxSize=i),this.sameOrigin){var a=t.getResponseHeader("X-NewRelic-App-Data");a&&(e.cat=a.split(", ").pop())}}else e.status=0;n.cbTime=this.cbTime,f.emit("xhr-done",[t],t),s("xhr",[e,n,this.startTime])}}}function o(t,e){var n=t.responseType;if("json"===n&&null!==e)return e;var r="arraybuffer"===n||"blob"===n||"json"===n?t.response:t.responseText;return h(r)}function i(t,e){var n=c(e),r=t.params;r.host=n.hostname+":"+n.port,r.pathname=n.pathname,t.sameOrigin=n.sameOrigin}var a=t("loader");if(a.xhrWrappable){var s=t("handle"),c=t(11),f=t("ee"),u=["load","error","abort","timeout"],d=u.length,l=t("id"),p=t(14),h=t(13),m=window.XMLHttpRequest;a.features.xhr=!0,t(9),f.on("new-xhr",function(t){var e=this;e.totalCbs=0,e.called=0,e.cbTime=0,e.end=r,e.ended=!1,e.xhrGuids={},e.lastSize=null,p&&(p>34||p<10)||window.opera||t.addEventListener("progress",function(t){e.lastSize=t.loaded},!1)}),f.on("open-xhr-start",function(t){this.params={method:t[0]},i(this,t[1]),this.metrics={}}),f.on("open-xhr-end",function(t,e){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&e.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid)}),f.on("send-xhr-start",function(t,e){var n=this.metrics,r=t[0],o=this;if(n&&r){var i=h(r);i&&(n.txSize=i)}this.startTime=(new Date).getTime(),this.listener=function(t){try{"abort"===t.type&&(o.params.aborted=!0),("load"!==t.type||o.called===o.totalCbs&&(o.onloadCalled||"function"!=typeof e.onload))&&o.end(e)}catch(n){try{f.emit("internal-error",[n])}catch(r){}}};for(var a=0;a<d;a++)e.addEventListener(u[a],this.listener,!1)}),f.on("xhr-cb-time",function(t,e,n){this.cbTime+=t,e?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof n.onload||this.end(n)}),f.on("xhr-load-added",function(t,e){var n=""+l(t)+!!e;this.xhrGuids&&!this.xhrGuids[n]&&(this.xhrGuids[n]=!0,this.totalCbs+=1)}),f.on("xhr-load-removed",function(t,e){var n=""+l(t)+!!e;this.xhrGuids&&this.xhrGuids[n]&&(delete this.xhrGuids[n],this.totalCbs-=1)}),f.on("addEventListener-end",function(t,e){e instanceof m&&"load"===t[0]&&f.emit("xhr-load-added",[t[1],t[2]],e)}),f.on("removeEventListener-end",function(t,e){e instanceof m&&"load"===t[0]&&f.emit("xhr-load-removed",[t[1],t[2]],e)}),f.on("fn-start",function(t,e,n){e instanceof m&&("onload"===n&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=(new Date).getTime()))}),f.on("fn-end",function(t,e){this.xhrCbStart&&f.emit("xhr-cb-time",[(new Date).getTime()-this.xhrCbStart,this.onload,e],e)})}},{}],11:[function(t,e,n){e.exports=function(t){var e=document.createElement("a"),n=window.location,r={};e.href=t,r.port=e.port;var o=e.href.split("://");!r.port&&o[1]&&(r.port=o[1].split("/")[0].split("@").pop().split(":")[1]),r.port&&"0"!==r.port||(r.port="https"===o[0]?"443":"80"),r.hostname=e.hostname||n.hostname,r.pathname=e.pathname,r.protocol=o[0],"/"!==r.pathname.charAt(0)&&(r.pathname="/"+r.pathname);var i=!e.protocol||":"===e.protocol||e.protocol===n.protocol,a=e.hostname===document.domain&&e.port===n.port;return r.sameOrigin=i&&(!e.hostname||a),r}},{}],12:[function(t,e,n){function r(){}function o(t,e,n){return function(){return i(t,[(new Date).getTime()].concat(s(arguments)),e?null:this,n),e?void 0:this}}var i=t("handle"),a=t(15),s=t(16),c=t("ee").get("tracer"),f=NREUM;"undefined"==typeof window.newrelic&&(newrelic=f);var u=["setPageViewName","setCustomAttribute","finished","addToTrace","inlineHit"],d="api-",l=d+"ixn-";a(u,function(t,e){f[e]=o(d+e,!0,"api")}),f.addPageAction=o(d+"addPageAction",!0),e.exports=newrelic,f.interaction=function(){return(new r).get()};var p=r.prototype={createTracer:function(t,e){var n={},r=this,o="function"==typeof e;return i(l+"tracer",[Date.now(),t,n],r),function(){if(c.emit((o?"":"no-")+"fn-start",[Date.now(),r,o],n),o)try{return e.apply(this,arguments)}finally{c.emit("fn-end",[Date.now()],n)}}}};a("setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(t,e){p[e]=o(l+e)}),newrelic.noticeError=function(t){"string"==typeof t&&(t=new Error(t)),i("err",[t,(new Date).getTime()])}},{}],13:[function(t,e,n){e.exports=function(t){if("string"==typeof t&&t.length)return t.length;if("object"==typeof t){if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if(!("undefined"!=typeof FormData&&t instanceof FormData))try{return JSON.stringify(t).length}catch(e){return}}}},{}],14:[function(t,e,n){var r=0,o=navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/);o&&(r=+o[1]),e.exports=r},{}],15:[function(t,e,n){function r(t,e){var n=[],r="",i=0;for(r in t)o.call(t,r)&&(n[i]=e(r,t[r]),i+=1);return n}var o=Object.prototype.hasOwnProperty;e.exports=r},{}],16:[function(t,e,n){function r(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,o=n-e||0,i=Array(o<0?0:o);++r<o;)i[r]=t[e+r];return i}e.exports=r},{}],17:[function(t,e,n){function r(t){return!(t&&"function"==typeof t&&t.apply&&!t[a])}var o=t("ee"),i=t(16),a="nr@original",s=Object.prototype.hasOwnProperty,c=!1;e.exports=function(t){function e(t,e,n,o){function nrWrapper(){var r,a,s,c;try{a=this,r=i(arguments),s="function"==typeof n?n(r,a):n||{}}catch(u){d([u,"",[r,a,o],s])}f(e+"start",[r,a,o],s);try{return c=t.apply(a,r)}catch(l){throw f(e+"err",[r,a,l],s),l}finally{f(e+"end",[r,a,c],s)}}return r(t)?t:(e||(e=""),nrWrapper[a]=t,u(t,nrWrapper),nrWrapper)}function n(t,n,o,i){o||(o="");var a,s,c,f="-"===o.charAt(0);for(c=0;c<n.length;c++)s=n[c],a=t[s],r(a)||(t[s]=e(a,f?s+o:o,i,s))}function f(e,n,r){if(!c){c=!0;try{t.emit(e,n,r)}catch(o){d([o,e,n,r])}c=!1}}function u(t,e){if(Object.defineProperty&&Object.keys)try{var n=Object.keys(t);return n.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(r){d([r])}for(var o in t)s.call(t,o)&&(e[o]=t[o]);return e}function d(e){try{t.emit("internal-error",e)}catch(n){}}return t||(t=o),e.inPlace=n,e.flag=a,e}},{}],ee:[function(t,e,n){function r(){}function o(t){function e(t){return t&&t instanceof r?t:t?s(t,a,i):i()}function n(n,r,o){t&&t(n,r,o);for(var i=e(o),a=l(n),s=a.length,c=0;c<s;c++)a[c].apply(i,r);var u=f[w[n]];return u&&u.push([v,n,r,i]),i}function d(t,e){m[t]=l(t).concat(e)}function l(t){return m[t]||[]}function p(t){return u[t]=u[t]||o(n)}function h(t,e){c(t,function(t,n){e=e||"feature",w[n]=e,e in f||(f[e]=[])})}var m={},w={},v={on:d,emit:n,get:p,listeners:l,context:e,buffer:h};return v}function i(){return new r}var a="nr@context",s=t("gos"),c=t(15),f={},u={},d=e.exports=o();d.backlog=f},{}],gos:[function(t,e,n){function r(t,e,n){if(o.call(t,e))return t[e];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:r,writable:!0,enumerable:!1}),r}catch(i){}return t[e]=r,r}var o=Object.prototype.hasOwnProperty;e.exports=r},{}],handle:[function(t,e,n){function r(t,e,n,r){o.buffer([t],r),o.emit(t,e,n)}var o=t("ee").get("handle");e.exports=r,r.ee=o},{}],id:[function(t,e,n){function r(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:a(t,i,function(){return o++})}var o=1,i="nr@id",a=t("gos");e.exports=r},{}],loader:[function(t,e,n){function r(){if(!g++){var t=y.info=NREUM.info,e=u.getElementsByTagName("script")[0];if(t&&t.licenseKey&&t.applicationID&&e){c(w,function(e,n){t[e]||(t[e]=n)});var n="https"===m.split(":")[0]||t.sslForHttp;y.proto=n?"https://":"http://",s("mark",["onload",a()],null,"api");var r=u.createElement("script");r.src=y.proto+t.agent,e.parentNode.insertBefore(r,e)}}}function o(){"complete"===u.readyState&&i()}function i(){s("mark",["domContent",a()],null,"api")}function a(){return(new Date).getTime()}var s=t("handle"),c=t(15),f=window,u=f.document,d="addEventListener",l="attachEvent",p=f.XMLHttpRequest,h=p&&p.prototype;NREUM.o={ST:setTimeout,CT:clearTimeout,XHR:p,REQ:f.Request,EV:f.Event,PR:f.Promise,MO:f.MutationObserver},t(12);var m=""+location,w={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-963.min.js"},v=p&&h&&h[d]&&!/CriOS/.test(navigator.userAgent),y=e.exports={offset:a(),origin:m,features:{},xhrWrappable:v};u[d]?(u[d]("DOMContentLoaded",i,!1),f[d]("load",r,!1)):(u[l]("onreadystatechange",o),f[l]("onload",r)),s("mark",["firstbyte",a()],null,"api");var g=0},{}]},{},["loader",2,10,4,3]);</script>
+            <script type="text/javascript" src="http://s.huffpost.com/assets/js.php?v=1474481690&f=yui_sub.js%2Cjquery.js" ></script>
+    
+    <script type="text/javascript" src="http://s.huffpost.com/assets/js.php?v=1474481690&f=jquery%2Fjquery.I18N.js%2Clocale%2Fdefault.js%2Csprintf-0.7.js"></script>
+
+        <script type="text/javascript" src="http://s.huffpost.com/assets/js.php?v=1474481690&f=huff.js%2Chp_config.js%2Cjsonmin.js%2Ccookiesmin.js%2Chp_track.js%2Chp_util.js%2Chp_browser.js%2Cget_font.js%2Cpreload_topnav_font.js%2C_tmp%2Fcommon.js%2C_tmp%2Fclick_tracker.js%2C_tmp%2Fcommon_paginator.js%2C_tmp%2Fhp_ads.js%2C_tmp%2Fquick_login.js%2Cfacebook.js%2Csnproject.js%2Chuff_promo.js%2Chptwitter_anywhere.js%2Ctwitter%2Ffrontpage.js%2Csearch_focus.js%2Csearch_autocomplete.js%2Cmod-follow.js%2Cconversations%2Fbootstrap.js%2C_front%2Ftopnav_new.js%2Cap_scroll_fastnews.js"></script>
+    <script type="text/javascript">huff.v()</script>
+    <script type="text/javascript">
+        huff.v({"last_deploy_commit_id":"dd1ad329d2bd2f40f66970480389c140bcb37624","deploy_commit_id":"37b93edcc2e491d76d02080062460c346337227d","deploy_seq":1474481690,"last_deploy_seq":1474303708,"deploy_date":"Wed, 21 Sep 2016 14:14:50 -0400","last_deploy_date":"Mon, 19 Sep 2016 12:48:28 -0400"});
+    </script>
+    <script type="text/javascript">
+        jQuery.getScript('http://s.huffpost.com/assets/js.php?v=1474481690&f=flashobjectmin.js%2Cjquery%2Fcolor.jquery.js%2C_tmp%2Ffloating_promt.js%2C_tmp%2Fquick_subscribe_user.js%2C_tmp%2Fquick_fan.js%2Cprovider.js%2Cposts.js%2Cmost_popular.js%2Clazyload-min.js%2Cuser.js%2Csocial_friends.js%2Cuser%2Frecommendations.js%2Csitemode.js%2Csplash_slideshow.js%2Cpopup_manager.js%2Cbadges_v2.js%2Cuser_levels.js%2Csharer.js%2Chuffconnect.js%2Cconnect_overview.js%2Cbing.js%2Chptwitter.js%2Cjquery%2Fui%2Fjquery.ui.core.min.js%2Cjquery%2Fui%2Fjquery.ui.widget.min.js%2Cjquery%2Fui%2Fjquery.ui.position.min.js%2Cjquery%2Fui%2Fjquery.ui.autocomplete.min.js%2Cjquery%2Fjquery.backgroundPosition.js%2Cjquery%2Fjquery.mousewheel-min.js%2C_tmp%2Fevent_module.js%2C_tmp%2Fdoc_status.js%2C_tmp%2Fview_tracker.js%2C_tmp%2Fslider.js%2C_tmp%2Fstructured_image.js%2C_tmp%2Fcurtain.js%2C_tmp%2Fpaginator.js%2C_tmp%2Fon_focus_timer.js%2C_tmp%2Ftwitter_util.js%2C_tmp%2Faol_search.js%2C_tmp%2Felection_widgets.js%2C_tmp%2Fhot_keys.js', function(){
+            huff.emit('ready');
+        });
+    </script>
+    <script type="text/javascript">
+// common modules
+huff.use('conf', 'modal', 'image', 'layout', 'cookies', 'user', 'track', 'common', 'promo');
+// front modules
+huff.use('app-feeds', 'front/blogroll', 'front/geopromo', 'front/quickread', 'front');
+</script>                <script type="text/javascript">
+        	    HPAds.full_page_config = {"flights":[{"mode":"all_but","name":"devil","spots":["left_lower"]}]};
+        	    HPAds.current_platform = "desktop";
+        	  </script>
+<!-- core ad call for AOL AdTech CMS -->
+<script type="text/javascript" src="http://o.aolcdn.com/ads/adsWrapper.js"></script>
+<!--end of ad call-->
+<script type='text/javascript'>
+adSetAdURL('http://' + ((document.domain && document.domain != '')?document.domain:'www.huffingtonpost.com') + ((location.port)?':'+location.port:'') + '/_uac/2014adpage.html');
+</script><script type="text/javascript">
+                  commercial_video = {
+                      "site_and_category":"huffpost.science",
+                      "package":""
+                  };
+              </script>        <!-- tacProp object and commercial asset inserts-->
+        <script type="text/javascript">
+                 tacProp={vert:"Science",tags:"kvpagetype=front:vert_front:atf:desktop;kvvert=science;"};
+                 tacProp.tags += ( (typeof HPAds!=="undefined") && (typeof HPAds.adtech_client_side_inf=="function") ) ? HPAds.adtech_client_side_inf() : "";
+                 if (typeof adSetOthAT=="function") adSetOthAT(tacProp.tags);
+              </script><script type="text/javascript">
+adSetMOAT("1");
+</script>        <!-- end of tacProp object -->
+    
+	
+
+<script type="text/javascript">
+	ClickTracker.vertical_id = 72;
+	ClickTracker.sample = 10;
+			</script>
+
+        <script type="text/javascript">
+                HPFB.app_id = "46744042133";
+        HPFB.api_key = "4d965afccc4d86c598dbf5d94fb34a7c";
+        HPFB.app_namespace = "huffpost";
+        HPConfig.hp_static_domain = "s.huffpost.com";
+        HPConfig.twitter_signature = "@HuffPostScience";
+    </script>
+
+<script type="text/javascript">
+    // google+
+    huff.use('google', function(g) {
+        g.init();
+    });
+
+    // load the widgets.js file asynchronously
+    window.twttr = (function (d,s,id) {
+        var t, js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return; js=d.createElement(s); js.id=id;
+        js.src="//platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs);
+        return window.twttr || (t = { _e: [], ready: function(f){ t._e.push(f) } });
+    }(document, "script", "twitter-wjs"));
+</script>
+
+<!-- Google Json Markup start -->
+<script type="application/ld+json">
+{
+"@context":"http://schema.org",
+"@type":"ItemList",
+"url":"http://www.huffingtonpost.com/science/",
+"itemListElement":[{
+					"@type":"ListItem",
+					"position":1,
+					"url":"http://www.huffingtonpost.com/2016/09/23/stephen-hawking-aliens_n_12161814.html"
+					},{
+					"@type":"ListItem",
+					"position":2,
+					"url":"http://www.huffingtonpost.com/2016/09/23/proprioception-sixth-sense_n_12156372.html"
+					},{
+					"@type":"ListItem",
+					"position":3,
+					"url":"http://www.huffingtonpost.com/2016/09/20/aquatic-cocaine-is-killing-the-worlds-cutest-porpoise_n_12155520.html"
+					},{
+					"@type":"ListItem",
+					"position":4,
+					"url":"http://www.huffingtonpost.com/researchgate/these-researchers-want-yo_b_12150298.html"
+					},{
+					"@type":"ListItem",
+					"position":5,
+					"url":"http://www.huffingtonpost.com/michael-d-shaw/cannabis-and-cancer_b_12119642.html"
+					},{
+					"@type":"ListItem",
+					"position":6,
+					"url":"http://www.huffingtonpost.com/megan-bramefinkelstein/can-we-get-rid-of-epipen-_b_12084834.html"
+					},{
+					"@type":"ListItem",
+					"position":7,
+					"url":"http://www.huffingtonpost.com/jonathan-d-moreno/testing-in-the-east-an-ep_b_12124206.html"
+					},{
+					"@type":"ListItem",
+					"position":8,
+					"url":"http://www.huffingtonpost.com/llewellyn-king/no-end-to-the-cold-wars-e_b_12079208.html"
+					},{
+					"@type":"ListItem",
+					"position":9,
+					"url":"http://www.huffingtonpost.com/christopher-king/the-science-of-nobel-priz_b_12117976.html"
+					},{
+					"@type":"ListItem",
+					"position":10,
+					"url":"http://www.huffingtonpost.com/lab-notes/a-revolution-in-supercomputing-is-coming-from-a-remote_b_12116590.html"
+					},{
+					"@type":"ListItem",
+					"position":11,
+					"url":"http://www.huffingtonpost.com/johan-rockstrom/from-compassion-to-care-o_b_12096930.html"
+					},{
+					"@type":"ListItem",
+					"position":12,
+					"url":"http://www.huffingtonpost.com/johan-rockstrom/from-compassion-to-care-o_b_12096890.html"
+					},{
+					"@type":"ListItem",
+					"position":13,
+					"url":"http://www.huffingtonpost.com/allen-frances/connecting-the-dots-between-the-opioid-epidemic-and-philanthropy_b_11996752.html"
+					},{
+					"@type":"ListItem",
+					"position":14,
+					"url":"http://www.huffingtonpost.com/marianne-schnall/a-cosmic-perspective-inte_b_12074408.html"
+					},{
+					"@type":"ListItem",
+					"position":15,
+					"url":"http://www.huffingtonpost.com/2016/09/23/breathtaking-storm-photos_n_12154738.html"
+					},{
+					"@type":"ListItem",
+					"position":16,
+					"url":"http://www.huffingtonpost.com/2016/09/22/chinese-space-station-crash-on-earth-2017_n_12150118.html"
+					},{
+					"@type":"ListItem",
+					"position":17,
+					"url":"http://www.huffingtonpost.com/2016/09/22/nasa-zodiac-change_n_12147116.html"
+					},{
+					"@type":"ListItem",
+					"position":18,
+					"url":"http://www.huffingtonpost.com/2016/09/22/map-of-cognitive-biases_n_12143026.html"
+					},{
+					"@type":"ListItem",
+					"position":19,
+					"url":"http://www.huffingtonpost.com/2016/09/21/summer-2016-floods_n_12141618.html"
+					},{
+					"@type":"ListItem",
+					"position":20,
+					"url":"http://www.huffingtonpost.com/2016/09/20/this-simple-graph-reveals-some-very-good-news-about-air-pollution_n_12120552.html"
+					},{
+					"@type":"ListItem",
+					"position":21,
+					"url":"http://www.huffingtonpost.com/2016/09/21/pluto-frozen-heart-beating_n_12114498.html"
+					},{
+					"@type":"ListItem",
+					"position":22,
+					"url":"http://www.huffingtonpost.com/2016/09/20/sec-investigates-exxon_n_12109478.html"
+					},{
+					"@type":"ListItem",
+					"position":23,
+					"url":"http://www.huffingtonpost.com/2016/09/20/pigeons-learn-recognize-words_n_12104874.html"
+					},{
+					"@type":"ListItem",
+					"position":24,
+					"url":"http://www.huffingtonpost.com/2016/09/19/human-skeleton-dating-back-2000-years-found-on-famed-shipwreck_n_12090906.html"
+					},{
+					"@type":"ListItem",
+					"position":25,
+					"url":"http://www.huffingtonpost.com/2016/09/18/moniz-climate-week_n_12086850.html"
+					},{
+					"@type":"ListItem",
+					"position":26,
+					"url":"http://www.huffingtonpost.com/2016/09/19/nasa-booster-nozzle_n_12085782.html"
+					},{
+					"@type":"ListItem",
+					"position":27,
+					"url":"http://www.huffingtonpost.com/2016/09/19/black-hole-burp_n_12081202.html"
+					},{
+					"@type":"ListItem",
+					"position":28,
+					"url":"http://www.huffingtonpost.com/2016/09/16/synesthesia-senses-brain_n_12059422.html"
+					},{
+					"@type":"ListItem",
+					"position":29,
+					"url":"http://www.huffingtonpost.com/2016/09/16/best-astronomy-photos-2016_n_12051576.html"
+					},{
+					"@type":"ListItem",
+					"position":30,
+					"url":"http://www.huffingtonpost.com/2016/09/16/seafood-traceability-technology_n_12044366.html"
+					},{
+					"@type":"ListItem",
+					"position":31,
+					"url":"http://www.huffingtonpost.com/2016/09/15/envious-personality-types_n_12034560.html"
+					},{
+					"@type":"ListItem",
+					"position":32,
+					"url":"http://www.huffingtonpost.com/2016/09/14/hazardous-ewaste-recycling_n_12032862.html"
+					},{
+					"@type":"ListItem",
+					"position":33,
+					"url":"http://www.huffingtonpost.com/2016/09/15/polar-bears-shrinking-sea-ice_n_12032650.html"
+					},{
+					"@type":"ListItem",
+					"position":34,
+					"url":"http://www.huffingtonpost.com/2016/09/14/super-agers-brain-memory_n_12012722.html"
+					},{
+					"@type":"ListItem",
+					"position":35,
+					"url":"http://www.huffingtonpost.com/2016/09/14/bayer-monsanto-merger_n_12007112.html"
+					},{
+					"@type":"ListItem",
+					"position":36,
+					"url":"http://www.huffingtonpost.com/2016/09/13/orca-captivity-ban-california-seaworld_n_12004650.html"
+					}]
+}
+</script>
+<!-- Google Json Markup end -->
+
+<!-- Parsely header code start -->
+<script type="application/ld+json">
+				{
+					"@context": "http://schema.org",
+					"@type": "webpage"
+				}
+			</script><!-- Parsely header code end -->
+
+    
+	<script type="text/javascript">
+        var ads_ext_ref_sig = '';
+    </script>
+<!--esi
+    <esi:choose>
+        <esi:when test="$(HTTP_REFERER) has '|dl' || $(QUERY_STRING) has '|dl' || $(HTTP_REFERER) has 'fundrace.' || $(QUERY_STRING) has 'fundrace.'">
+            <esi:choose>
+                            <esi:when test="($(HTTP_REFERER) has '|dl') || ($(QUERY_STRING) has '|dl')">
+                	<esi:text>
+                    <script type="text/javascript">
+                        var ads_ext_ref_sig = 'aol_welcome_screen';
+                    </script>
+                    </esi:text>
+                </esi:when>
+                            <esi:when test="($(HTTP_REFERER) has 'fundrace.') || ($(QUERY_STRING) has 'fundrace.')">
+                	<esi:text>
+                    <script type="text/javascript">
+                        var ads_ext_ref_sig = 'fundrace';
+                    </script>
+                    </esi:text>
+                </esi:when>
+                        </esi:choose>
+        </esi:when>
+    </esi:choose>   
+-->
+<!--esi
+	<esi:choose>
+		<esi:when test="($exists($(HTTP_COOKIE{'ad_ops_bookmarklet'})) && !($(HTTP_HOST) has 'editorial'))">
+            <script type="text/javascript" src="/ads/bookmarklet/bookmarklet.js"></script>
+		</esi:when>
+	</esi:choose>
+-->
+</head>
+<body id="science" class="loadimages frontpage science ">
+<div id="view_mobile_banner" style="display: none; min-width: 1000px; width: 100%; height: 105px; background: url(/images/mobile/view-mobile-bkg.png);background-size: cover; text-align: center;">
+	<a href="http://www.huffingtonpost.com/science/?m=true" style="color: #FFF; font-size: 40px; display: inline-block; padding-top: 18px; text-transform: uppercase; width: 100%; height: 105px;">
+		<img src="/images/mobile/view-mobile-icon.png" style="height: 68px; margin-bottom: -16px;"/>
+		View mobile site	</a>
+</div>
+<script> if(window.navigator.userAgent.match(/SCH-I535|SPH-L710|SGH-N064|SGH-N035|SGH-T999|SGH-I747|GT-I9305|GT-I9300|android.+mobile|iphone|ipod|webos|blackberry.+webkit.+mobile|htc|opera\ mini|operamini|iemobile|opera\ mobi|lge|lg|palm|samsung|nokia|windows\ phone|windows\ ce|bb10|blackberry|Mobile.+Firefox/i)) {
+	document.getElementById("view_mobile_banner").style.display = 'block';
+}
+</script>
+
+<div id="ad_top_1x1" class="ad_wrapper"><style type="text/css">
+#snp_friends_module{display: none;}
+#all_frontpage_widgets #snp_friends_module{display: block !important;}
+.snp_module_pagination {display: none !important;}
+</style></div><div id="ad_top_1x1" class="ad_wrapper"><script type="text/javascript">
+    var __gravity_params_most_popular = {
+        type: "content",
+        site_guid: "95ec266b244de718b80c652a08af06fa",
+        pl: 42,
+	title: "Suggested for you"
+    };
+</script>
+</div><div id="ad_top_1x1" class="ad_wrapper"><style type="text/css">
+.grid_block #center_entries_container .entry h2 a, #right_column_entries .entry h2 a, #the_blogs h2 a, .grid_block #the_blogs .entry.no_border h2 a {line-height: 18px !important;}
+div#center_entries h2 a, div#right_col h2 a, #right_column h2 a, #center_column h2 a {line-height: 18px !important;font-size: 16px !important;}
+#uk-entertainment div#featured_content h2 a{line-height: 18px !important;font-size: 18px !important;}
+</style></div><div id="ad_top_1x1" class="ad_wrapper"><style type="text/css"> #ad_leaderboard_flex iframe { margin: 0 auto; }</style></div><div id="ad_top_1x1" class="ad_wrapper"><style>
+body#news.hpsn.us_body #threeup_top_wrapper {display: none !important;}
+</style></div>
+<div id="fb-root"></div>
+    <!--esi
+<esi:choose>
+    <esi:when test="$(HTTP_USER_AGENT) has 'MSIE 6'">
+        <esi:text>
+                <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+            <style>
+                .chromeFrameOverlayContent {
+                    margin-top:-200px;
+                }
+            </style>
+            <script>
+               // You may want to place these lines inside an onload handler
+               CFInstall.check({
+                 mode: "overlay",
+                 destination: "http://www.huffingtonpost.com"
+            });
+            </script>
+            </esi:text>
+    </esi:when>
+</esi:choose>
+-->
+    
+<div id="_snp_tracking" style="width:0px; height:0px;" ></div>
+<script type="text/javascript">
+	HPConfig.locale = "";
+	HPConfig.enable_fb_widgets = 1;
+	HPConfig.current_vertical_name = "science";
+	HPConfig.current_vertical_id = 72;
+    HPConfig.current_channel = "us.hpmgsci";
+	HPConfig.current_web_address = "www.huffingtonpost.com";
+    HPConfig.current_uri = "/science/";
+	HPConfig.inst_type = "prod";
+	HPConfig.timestamp_for_clearing_js = "0";
+	HPConfig.bit_ly_key = {"_Note":"bit.ly public key, will generate huff.to links only for whitelisted domains","user_name":"huffpostapi","user_key":"R_d7766e99c939e9f2b0c074c155e98b83"};
+	HPConfig.display_domain = "i.huffpost.com";
+	HPConfig.hp_static_domain = "s.huffpost.com";
+	HPConfig.page_type = "frontpage";
+    HPConfig.terms_link = "http://www.huffingtonpost.com/terms.html";
+    HPConfig.privacy_link = "http://privacy.aol.com/";
+	HPConfig.huffsite = "www.huffingtonpost.com";
+	HPConfig.current_time = "23 September 2016, 23:50";
+HPAds.doubleclick = "huffpost.science";
+//Synchronise the user login status on multi-domain with huffingtonpost.com
+
+</script>
+
+<script>
+    HPFB.init();
+    TwitterAnywhere.anywhere();
+</script>
+
+<script type="text/javascript">
+	HPConfig.fb_recom_version = 2;
+	HPConfig.most_popular_version = 3;
+</script>
+
+<noscript>
+<h2>Using a mobile device? Go to <a href="http://m.huffingtonpost.com">m.huffingtonpost.com</a> for huffpost mobile.</h2>
+</noscript>
+
+<div id="mobile_promo"></div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+HPTrack.async = true;
+HPTrack.getTracker('UA-71081-1');
+HPTrack.setCustomVar("page", "front");
+HPTrack.setCustomVar("vertical", "Science");
+           
+HPTrack.trackPageview();
+    
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+})();
+
+bN_cfg = {
+  h: location.hostname,
+  p: {"dL_ch":"us.hpmgsci","dL_flid":"_","dL_dpt":"front","dL_blogID":10,"a_type":"vertical","a_value":"science","cobrand":"HuffPost"}
+};
+
+
+function runOmni() {
+ 
+ if(typeof HuffPoUtil != "undefined"){
+  if (HuffPoUtil.getCookie('huffpost_user_id') != '')
+    s_265.eVar17 = 'huffpost_' + HuffPoUtil.getCookie('huffpost_user_id');
+  }
+
+  s_265.prop54 = 'huffpost';
+  s_265.pfxID = 'hpo';
+  s_265.channel = 'us.hpmgsci';
+  s_265.linkInternalFilters = 'javascript:,huffingtonpost.com';
+  s_265.prop16 = 'page';
+  s_265.prop1 = 'front';
+  s_265.pageName = "" + document.title;
+  s_265.prop12 = "" + document.URL.split('?')[0];
+  s_265.t();
+}
+
+s_265_account ="aolhuffpostscience,aolsvc";
+
+(function(d){
+var s = d.createElement('script');
+s.src = "http://o.aolcdn.com/os_merge/?file=/aol/beacon.min.js&file=/aol/omniture.min.js";
+d.getElementsByTagName('head')[0].appendChild(s);
+})(document);
+
+</script>
+
+
+
+<div id="wrapper">
+
+<div class="big-news-container relative" id="topnav_big_news_module" data-beacon='{"p":{"mnid":"topnav_big_news_module","mlid":"topnav_bignews"}}'>
+
+<div id="big_news_update">
+<ul class="big_news_ontop">
+<li><a href="/news/stephen-hawking/" class="big_news_item bn_v_science" onclick="HPTrack.trackPageview('/t/a/topnav_bignews/v2');">Stephen Hawking</a></li></ul>
+</div>
+    
+<div class="more_in_bignews">
+<script type='text/javascript'>ads_top_bar_sponsor_links = ["<a href='\/news\/life-lessons\/\/' class='margin_right_10' onclick='HPTrack.trackPageview(\"\/t\/a\/topnav_bignews\/v2\");'>Life Lessons<\/a>"];ads_top_bar_sponsor_links.sort( function() { return 0.5 - Math.random() } );for(var i = 0; i < 2 && i < ads_top_bar_sponsor_links.length; i++){document.write(ads_top_bar_sponsor_links[i]);}</script>
+	<a href="http://itunes.apple.com/us/app/the-huffington-post/id306621789?mt=8" class="margin_right_10" data-beacon='{"p":{"lnid":"bgNewsMore"}}' onclick="HPTrack.trackPageview('/t/a/topnav_bignews/v2');">iOS app</a>
+	<a href="https://play.google.com/store/apps/details?id=com.huffingtonpost.android" class="margin_right_10" data-beacon='{"p":{"lnid":"bgNewsMore"}}' onclick="HPTrack.trackPageview('/t/a/topnav_bignews/v2');">Android app</a>
+	<a href="/big-news/#science" data-beacon='{"p":{"lnid":"bgNewsMore"}}' onclick="HPTrack.trackPageview('/t/a/topnav_bignews/v2');">More</a>
+</div>
+<div class="clear"></div>
+</div>
+<div class="hp_auth" id="hp_auth">
+
+
+    <div id="not_logged_user" class="login">
+        <span class="hidden"><button class="hp_desktop_alerts">Desktop Alerts</button></span>      
+    </div>
+  
+    <script type="text/javascript">
+        HPUtil && HPUtil.updateNavByReferrer();
+    </script>
+
+    <div id="wendybird_user" class="absolute display_none">
+
+        <ul class="user-nav no-select">
+                    <li class="wendybird_user_data">
+                <div class="clearfix display_none" id="avatar_logged_in"></div>
+                <div class="arrow-user-active" style="border-top-color: #058b7b;"></div>
+
+                <ul class="dropdown popup">
+                    <li><a href="/social/" class="profile">Profile</a></li>
+                    <li><a href="/users/preferences/">Settings</a></li>
+                    <li>
+                        <a href="/users/logout/?referer=%2F" onclick="QuickLogin.SocialLogout('/users/logout/?referer=%2F'); return false;">
+                            Logout                        </a>
+	                 </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+ 
+<div class="wrapper_h clearfix">
+
+	<div class="modal_inner topnav_margin_btm" id="topnav_margin_btm"></div>
+
+	<style type="text/css">#topnav_margin_btm { margin:0 !important }</style><div id="ad_leaderboard_flex" class="ad_wrapper_ science_modal_inner">                    
+                    <script type="text/javascript">
+                        if(HPAds.ad_check_page_config('leaderboard_flex')) {
+                            var adId = '93319572';
+                            htmlAdWH(adId, "lb", "lb","fc");
+                            var debugadcode = '';
+                            document.write(debugadcode);
+                        }
+                    </script>
+                    </div><script type="text/javascript">HPAds.ad_onload('div[id^="ad_leaderboard_flex"] iframe','HPAds.ad_uac_onload_handler(\' iframe[class^="uac_"]\',this,\'bottom_ad_border_div\',10)')</script>
+	<div id="wrapper_inner">
+    <!-- 
+
+<esi:assign name="is_canada" value="$(HTTP_HOST) has 'huffingtonpost.ca'" />
+
+<esi:choose>
+<esi:when test="$(GEO{'country_code'}) == 'CA' && $(is_canada) && !$exists($(HTTP_COOKIE{'canada_region_popup_hide'})) ">
+
+  <esi:assign name="canada_huffpo_regions" value="['AB', 'BC', 'QC' ]" />
+  <esi:assign name="is_canada_qc" value="$(HTTP_HOST) has 'quebec'" />
+  <esi:assign name="is_canada_ab" value="$(REQUEST_PATH) has 'alberta'" />
+  <esi:assign name="is_canada_bc" value="$(REQUEST_PATH) has 'british-columbia'" />
+
+  <esi:choose>
+    <esi:when test="$(is_canada_ab) || $(is_canada_bc) || $(is_canada_qc) ">
+	  <esi:assign name="is_canada" value="0" />
+    </esi:when>
+  </esi:choose>
+
+  <esi:choose>
+  <esi:when test="!(!($(canada_huffpo_regions) has $(GEO{'region_code'})) && $(is_canada) ) ">
+    
+    <esi:choose>
+        <esi:when test="$(GEO{'region_code'}) == 'QC' && $(is_canada_qc) " >
+ 			<esi:assign name="region_msg">
+ 				'''To switch to the main Canada edition, or to make another English-speaking region your default view, please use this menu.'''
+ 			</esi:assign>
+        </esi:when>
+        <esi:when test="$(GEO{'region_code'}) == 'QC' && $(is_canada) " >
+ 			<esi:assign name="region_msg">
+ 				'''Pour consulter le HuffPost Qu&eacute;bec (en fran&ccedil;ais), s&eacute;lectionnez l&#8217;&eacute;dition dans le menu "R&eacute;gions"'''
+ 			</esi:assign>
+        </esi:when>
+        <esi:when test="$(GEO{'region_code'}) == 'AB' && $(is_canada_qc) " >
+ 			<esi:assign name="region_msg">
+ 				'''Want to get Alberta news, plus the best of Huffington Post Canada's English edition?<br/>Select "Alberta" to switch to the english edition and localize your front page.'''
+ 			</esi:assign>
+        </esi:when>
+        <esi:when test="$(GEO{'region_code'}) == 'AB' && $(HTTP_COOKIE{'region_view'})!='CA_AL' " >
+ 			<esi:assign name="region_msg">
+ 				'''Want to get Alberta news, plus the best of Huffington Post Canada?<br/><br/>Select "Alberta" to localize your front page.'''
+ 			</esi:assign>
+        </esi:when>
+        <esi:when test="$(GEO{'region_code'}) == 'BC' && $(is_canada_qc) " >
+ 			<esi:assign name="region_msg">
+ 				'''Want to get BC news, plus the best of Huffington Post Canada's English edition?<br/>Select "British Columbia" to switch to the english edition and localize your front page.'''
+ 			</esi:assign>
+        </esi:when>
+        <esi:when test="$(GEO{'region_code'}) == 'BC' && $(HTTP_COOKIE{'region_view'})!='CA_BC' " >
+ 			<esi:assign name="region_msg">
+ 				'''Want to get BC news, plus the best of Huffington Post Canada?<br/>Select "British Columbia" to localize your front page.'''
+ 			</esi:assign>
+        </esi:when>
+        <esi:when test="$(is_canada_qc) " >
+ 			<esi:assign name="region_msg">
+ 				'''Want to view Huffington Post Canada's English edition?<br/><br/>Select "All Canada" from the region menu.'''
+ 			</esi:assign>
+        </esi:when>
+    </esi:choose>
+    
+    
+    <esi:choose>
+    <esi:when test="$exists($(region_msg)) ">
+    
+-->
+<!--esi
+<style type="text/css">
+div.speech
+{
+	Font: 12px/14px Arial;
+	float:left;
+	position: absolute;
+	width: 300px;
+	height: 70px;
+	text-align: left;
+	background-color: #303030;
+	color: #fff;
+	border: 5px solid #303030;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	z-index:2;
+}
+
+div.speechcontent {
+	padding-left:10px;
+	padding-top:6px;
+}
+div.speechclose
+{
+	float:right;
+	width: 12px;
+	height: 12px;
+	background: url('/images/white_close.png') no-repeat;
+	cursor: pointer;
+	opacity:0.5;
+}
+
+div.speech:before
+{
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+	left: 150px;
+	top: 70px;
+	border: 15px solid;
+	border-color: #303030 transparent transparent transparent;
+}
+
+</style>
+
+<div id="speech_popup" class="speech">
+<div class="speechclose"></div>
+<div class="speechcontent">
+
+$(region_msg)
+
+</div>
+</div>
+
+<script src="/include/lib/jquery/jquery.cookie.js"></script>
+<script>
+	jQuery(".speechclose").click(function () {
+		jQuery.cookie("canada_region_popup_hide","hide",{expires:999});
+        jQuery(".speech").remove();
+    });
+    
+	var count;
+    if (jQuery.cookie("canada_region_popup_count")) {
+        count = parseInt(jQuery.cookie("canada_region_popup_count")) + 1;
+    }
+    else {
+        count = 1;
+    }
+    jQuery.cookie("canada_region_popup_count",count, {expires:999});
+
+    if (parseInt(count) >= 20) {
+		jQuery.cookie("canada_region_popup_hide","hide",{expires:999});
+    }        
+</script>
+ -->
+ <!-- 
+    </esi:when>
+    </esi:choose>
+  </esi:when>
+  </esi:choose>
+</esi:when>
+</esi:choose>
+
+ -->
+<div id="masthead">
+    
+							                    
+			
+
+                <div id="mast_date" class="data center georgia_12 margin_top_7 color_747474">
+                   September 23, 2016				</div>
+				<div id="logo" data-beacon='{"p":{"mnid":"logo","mlid":"masthead"}}' class="logo_science center">
+														<a href="http://www.huffingtonpost.com/science/">
+
+								<h1>
+																			<img src="http://s.huffpost.com/images/v/logos/v4/science.gif?40" alt="The Huffington Post" border="0" />
+																	</h1>
+
+                                                            
+										<div class="padding_5"></div>								</a>
+										</div>
+
+				
+			        		
+		
+		<div id="masthead_sub">
+
+						<div class="clearfix margin_5_0 social_search_mod ">
+		                            		                                <div class="float_left margin_bottom_10 width_ad"><div class="float_right"></div></div>
+		                            						<div class="clear"></div>
+									<div class="float_left">
+						<div id="edition_nav" class="arial_11 float_left relative edition_nav">
+							<div class="edition">Edition: <strong>U.S.</strong> <span class="arrow-down"></span></div>
+							<ul class="absolute edition_nav_list">
+                                                          <li>
+									<a href="http://www.huffingtonpost.com/?country=AR">
+										<span>AR</span> عربي (Arabic)
+									</a>
+								</li>
+                                                                                                                <li>
+									<a href="http://www.huffingtonpost.com/?country=AU">
+										<span>AU</span> Australia
+									</a>
+								</li>
+								<li>
+									<a href="http://www.huffingtonpost.com/?country=BR">
+										<span>BR</span> Brasil
+									</a>
+								</li>
+								<li>
+									<a href="http://www.huffingtonpost.com/?country=CA">
+										<span>CA</span> Canada
+									</a>
+								</li>
+								<li>
+									<a href="http://www.huffingtonpost.com/?country=DE">
+										<span>DE</span> Deutschland
+									</a>
+								</li>
+								<li>
+									<a href="http://www.huffingtonpost.com/?country=ES">
+										<span>ES</span> Espa&ntilde;a
+									</a>
+								</li>
+								<li>
+									<a href="http://www.huffingtonpost.com/?country=FR">
+										<span>FR</span> France
+									</a>
+								</li>
+								<li>
+									<a href="http://www.huffingtonpost.com/?country=GR">
+									      <span>GR</span> Ελλάδα (Greece)
+									</a>
+								</li>
+                                                        <li>
+									<a href="http://www.huffingtonpost.com/?country=IN">
+									      <span>IN</span> India
+									</a>
+								</li>
+
+								<li>
+									<a href="http://www.huffingtonpost.com/?country=IT">
+										<span>IT</span> Italia
+									</a>
+								</li>
+								<li>
+									<a href="http://www.huffingtonpost.com/?country=JP">
+										<span>JP</span> &#26085;&#26412; (Japan)
+									</a>
+								</li>
+								<li>
+									<a href="http://www.huffingtonpost.com/?country=KR">
+										<span>KR</span> &#54620;&#44397; (Korea)
+									</a>
+								</li>
+								<li>
+									<a href="http://www.huffingtonpost.com/?country=MG">
+										<span>MG</span> Maghreb
+									</a>
+								</li>
+                                                                                                                                <li>
+                                                                                                                                                 <a href="http://www.huffingtonpost.com.mx/">
+                                                                                                                                                               <span>MX</span> M&eacute;xico
+                                                                                                                                                 </a>
+                                                                                                                                </li>
+								<li>
+									<a href="http://www.huffingtonpost.com/?country=UK">
+										<span>UK</span> United Kingdom
+									</a>
+								</li>
+								<li>
+									<a href="http://www.huffingtonpost.com/?country=US">
+										<span>US</span> United States
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+				<script type="text/javascript">
+					(function($) {
+						$('#edition_nav, #region_nav')
+							.click(function(){
+								$(this).toggleClass('edition_nav_selected');
+							})
+							.mouseleave(function(){
+								var e = $(this),
+									t = e.data('timer');
+								t && clearTimeout(t);
+								t = setTimeout(function(){
+									e.hasClass('edition_nav_selected') && e.removeClass('edition_nav_selected')
+								}, 1000);
+								e.data('timer', t);
+							})
+							.mouseenter(function(){
+								var t = $(this).data('timer');
+								t && clearTimeout(t);
+							});
+					})(jQuery);
+				</script>
+           
+				<div class="float_right social_list">
+		                <div class="fb-like" data-href="http://www.facebook.com/HuffPostScienceTech" data-send="false" data-layout="button_count" data-width="95" data-show-faces="false" data-colorscheme="light" data-font="trebuchet ms" data-action="like" ref="" style="width: 95px" hp_track="Vertical Page"></div><script type="text/javascript">
+jQuery('#fb_like_vertical').mouseenter(function() {
+	var html = "<div id=\"fb-tooltip\" class=\"fb-tooltip-main\"><div class=\"fb-tooltip-wrapper\"><span>Follow us on Facebook</span><br/>Get updates from HuffPost Science posted directly to your News Feed.<div class=\"corner\"><div class=\"first\"></div><div class=\"second\"></div></div></div></div>";
+	var coords = [-5, -78];
+	if( HPConfig.current_vertical_name == 'homepage' ) {
+		coords = [-5, -70];
+	}
+	else if( HPConfig.current_vertical_name == 'mapquest' ) {
+		coords = [-5, -68];
+	}
+	FloatingPrompt.embed(this, html, undefined, 'top', {fp_intersects:1, timeout_remove:2000,ignore_arrow: true, width:236, add_xy:coords, class_name: 'clear-overlay'});	
+});
+</script>
+
+<span data-placement="Header/Science">
+
+<a href="https://twitter.com/HuffPostScience" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false" data-lang="en" data-width="70px">Follow</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+</span>
+				</div>
+
+        </div>            <script type="text/javascript">
+                HPUtil.initUserNavStatus(false);
+            </script>
+			<!-- Top nav -->
+			<div id="top_nav" class="top_nav_menu">
+	<div id="topnav_top" class="topnav_first_row relative clearfix" data-beacon='{"p":{"mnid":"topnav_first_row","mlid":"topnav"}}'>
+<script type="text/javascript">
+	huff.emit('topnav/load-start', document.getElementById('topnav_top'));
+</script>
+<ul class="jd_menu jd_menu_slate star_for_local">
+ <li class="n_home first" id="li_homepage" data-beacon='{"p":{"lnid":"homepage"}}'>
+      <a href="http://www.huffingtonpost.com/" title="Home">FRONT PAGE</a>
+    
+ </li>
+ <li class='n_politics n_empty' id='li_politics' data-beacon='{"p":{"lnid":"politics"}}'>
+  <div class='relative'>
+   <a class='topnav_tab_link' href='http://www.huffingtonpost.com/politics/'>Politics</a>
+   <div class='menu absolute'>
+    <div class='menu_h clearfix'>
+     <div class='trending' data-beacon='{"p":{"lnid":"trending"}}'>  <!-- last update is 20160918_164544 -->
+      <ul>
+        <li id='id_trending_12066646' data-beacon='{"p":{"plid":12066646}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/17/trump-chimpanzee-behavior_n_12066646.html?ir=Politics'>Trump's Behavior Similar To Male Chimpanzee, Says Jane Goodall</a>
+        </li>
+        <li id='id_trending_12062602' data-beacon='{"p":{"plid":12062602}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/17/robert-gates-donald-trump-national-security_n_12062602.html?ir=Politics'>Former Defense Secretary Robert Gates Says Trump Is 'Beyond Repair'</a>
+        </li>
+        <li id='id_trending_12050728' data-beacon='{"p":{"plid":12050728}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/16/trump-birther-cnn_n_12050728.html?ir=Politics'>CNN Anchors Have Finally Had It With Donald Trump's Lies</a>
+        </li>
+        <li id='id_trending_12046324' data-beacon='{"p":{"plid":12046324}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/16/donald-trump-harry-reid-eye-injury_n_12046324.html?ir=Politics'>Trump Belittles Harry Reid's Injury, Gets Deserved Response</a>
+        </li>
+        <li id='id_trending_12051272' data-beacon='{"p":{"plid":12051272}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/16/mark-cuban-donald-trump-interview-charity_n_12051272.html?ir=Politics'>Mark Cuban Offers To Give $10 Million To Charity If Trump Can Explain His Own Policies</a>
+        </li>
+       <li class='vertical_info'>
+         <div class='float_right social_widget'>
+          <div class='i_v_fb_like like_fb_like_action i_v_with_count'>
+          </div>
+         </div>
+         <a href='http://www.huffingtonpost.com/politics/'>Go to Politics<span class='arrow'><span></span></span></a>
+        </li>
+       </ul>
+      </div>
+      <div class='more_box'>
+       <strong class='title'>More in Politics</strong>
+       <ul class='vertical_list' data-beacon='{"p":{"lnid":"more_in"}}'>
+        <li><a href='http://elections.huffingtonpost.com/pollster'>Pollster</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/16-and-president/'>'16 And President</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/trail-to-the-chief/'>Trail To The Chief</a></li>
+        <li><a href='http://www.huffingtonpost.com/entry/candidate-confessional-election-losses_us_56901d6ce4b0c8beacf704c8'>Candidate Confessional</a></li>
+        </ul>
+        <strong class='title'>You might also like</strong>
+        <ul class='like_list' data-beacon='{"p":{"lnid":"like_list"}}'>
+         <li><a href='http://www.huffingtonpost.com/world/'>WorldPost</a></li>
+         <li><a href='http://www.huffingtonpost.com/green/'>Green</a></li>
+         <li><a href='http://www.huffingtonpost.com/black-voices/'>Black Voices</a></li>
+         <li><a href='http://www.huffingtonpost.com/latino-voices/'>Latino Voices</a></li>
+         <li><a href='http://www.huffingtonpost.com/queer-voices/'>Queer Voices</a></li>
+        </ul>
+      </div>
+     </div>
+    </div>
+   </div>
+  </li>
+ <li class='n_business n_empty' id='li_business' data-beacon='{"p":{"lnid":"business"}}'>
+  <div class='relative'>
+   <a class='topnav_tab_link' href='http://www.huffingtonpost.com/business/'>Business</a>
+   <div class='menu absolute'>
+    <div class='menu_h clearfix'>
+     <div class='trending' data-beacon='{"p":{"lnid":"trending"}}'>  <!-- last update is 20160923_235002 -->
+      <ul>
+        <li id='id_trending_12142932' data-beacon='{"p":{"plid":12142932}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/22/elizabeth-warren-clinton-treasury_n_12142932.html?ir=Business'>Elizabeth Warren Seems To Be Staking Out Her Place In A Clinton Presidency</a>
+        </li>
+        <li id='id_trending_12153790' data-beacon='{"p":{"plid":12153790}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/23/twitter-google-salesforce_n_12153790.html?ir=Business'>Twitter Is Reportedly In Sales Talks With Google And Salesforce</a>
+        </li>
+        <li id='id_trending_12121780' data-beacon='{"p":{"plid":12121780}}'>
+          <a href='http://www.huffingtonpost.com/samuel-mandell/the-biggest-work-regret-i-carry-with-me_b_12121780.html?ir=Business'>Samuel Mandell: The Biggest Work Regret I Carry With Me</a>
+        </li>
+        <li id='id_trending_12120602' data-beacon='{"p":{"plid":12120602}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/21/apple-mclaren_n_12120602.html?ir=Business'>Apple Is Reportedly In Talks To Buy British Racing Carmaker McLaren</a>
+        </li>
+        <li id='id_trending_12121908' data-beacon='{"p":{"plid":12121908}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/20/federal-reserve-interest-rate_n_12121908.html?ir=Business'>Federal Reserve Maintains Key Interest Rate In Another Nod To Slow Recovery</a>
+        </li>
+       <li class='vertical_info'>
+         <div class='float_right social_widget'>
+          <div class='i_v_fb_like like_fb_like_action i_v_with_count'>
+          </div>
+         </div>
+         <a href='http://www.huffingtonpost.com/business/'>Go to Business<span class='arrow'><span></span></span></a>
+        </li>
+       </ul>
+      </div>
+      <div class='more_box'>
+       <strong class='title'>More in Business</strong>
+       <ul class='vertical_list' data-beacon='{"p":{"lnid":"more_in"}}'>
+        <li><a href='http://www.huffingtonpost.com/small-business/'>Small Biz</a></li>
+        <li><a href='http://www.huffingtonpost.com/money/'>Money</a></li>
+        </ul>
+        <strong class='title'>You might also like</strong>
+        <ul class='like_list' data-beacon='{"p":{"lnid":"like_list"}}'>
+         <li><a href='http://www.huffingtonpost.com/world/'>WorldPost</a></li>
+         <li><a href='http://www.huffingtonpost.com/technology/'>Tech</a></li>
+         <li><a href='http://www.huffingtonpost.com/media/'>Media</a></li>
+         <li><a href='http://www.huffingtonpost.com/arts/'>Arts</a></li>
+         <li><a href='http://www.huffingtonpost.com/sports/'>Sports</a></li>
+         <li><a href='http://www.huffingtonpost.com/weird-news/'>Weird News</a></li>
+         <li><a href='http://www.huffingtonpost.com/news/smarter-ideas/'>Smarter Ideas</a></li>
+         <li><a href='http://www.huffingtonpost.com/news/urban_progress/'>Urban Progress</a></li>
+        </ul>
+      </div>
+     </div>
+    </div>
+   </div>
+  </li>
+ <li class='n_entertainment n_empty' id='li_entertainment' data-beacon='{"p":{"lnid":"entertainment"}}'>
+  <div class='relative'>
+   <a class='topnav_tab_link' href='http://www.huffingtonpost.com/entertainment/'>Entertainment</a>
+   <div class='menu absolute'>
+    <div class='menu_h clearfix'>
+     <div class='trending' data-beacon='{"p":{"lnid":"trending"}}'>  <!-- last update is 20160923_191027 -->
+      <ul>
+        <li id='id_trending_12153148' data-beacon='{"p":{"plid":12153148}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/23/gabrielle-union-wants-to-have-a-conversation-with-amy-schumer-about-white-privilege_n_12153148.html?ir=Entertainment'>Gabrielle Union Wants To Have An Honest Conversation About Amy Schumer’s White Privilege</a>
+        </li>
+        <li id='id_trending_12135534' data-beacon='{"p":{"plid":12135534}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/22/brad-pitt-under-investigation-for-child-abuse-after-alleged-blow-up-on-private-plane_n_12135534.html?ir=Entertainment'>Brad Pitt Reportedly Under Investigation For Child Abuse After Alleged Incident On Private Plane (UPDATED)</a>
+        </li>
+        <li id='id_trending_12140358' data-beacon='{"p":{"plid":12140358}}'>
+          <a href='http://www.huffingtonpost.com/2016/07/11/the-baby-from-labryinth_n_12140358.html?ir=Entertainment'>30 Years Later, The Baby From 'Labyrinth' Is Now A Real-Life Goblin King</a>
+        </li>
+        <li id='id_trending_12156340' data-beacon='{"p":{"plid":12156340}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/22/kim-kardashian-is-suddenly-and-disappointingly-considering-voting-for-donald-trump_n_12156340.html?ir=Entertainment'>Kim Kardashian Is Suddenly (And Disappointingly) Considering Voting For Donald Trump</a>
+        </li>
+        <li id='id_trending_12135094' data-beacon='{"p":{"plid":12135094}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/22/mia-farrows-son-thaddeus-dead-dies_n_12135094.html?ir=Entertainment'>Mia Farrow's Son Thaddeus Dead At 27</a>
+        </li>
+       <li class='vertical_info'>
+         <div class='float_right social_widget'>
+          <div class='i_v_fb_like like_fb_like_action i_v_with_count'>
+          </div>
+         </div>
+         <a href='http://www.huffingtonpost.com/entertainment/'>Go to Entertainment<span class='arrow'><span></span></span></a>
+        </li>
+       </ul>
+      </div>
+      <div class='more_box'>
+       <strong class='title'>More in Entertainment</strong>
+       <ul class='vertical_list' data-beacon='{"p":{"lnid":"more_in"}}'>
+        <li><a href='http://www.huffingtonpost.com/celebrity/'>Celebrity</a></li>
+        <li><a href='http://www.huffingtonpost.com/tv/'>TV</a></li>
+        </ul>
+        <strong class='title'>You might also like</strong>
+        <ul class='like_list' data-beacon='{"p":{"lnid":"like_list"}}'>
+         <li><a href='http://www.huffingtonpost.com/comedy/'>Comedy</a></li>
+         <li><a href='http://www.huffingtonpost.com/arts/'>Arts</a></li>
+         <li><a href='http://www.huffingtonpost.com/books/'>Books</a></li>
+         <li><a href='http://www.huffingtonpost.com/style/'>Style</a></li>
+         <li><a href='http://www.huffingtonpost.com/weird-news/'>Weird News</a></li>
+         <li><a href='http://www.moviefone.com/'>Moviefone</a></li>
+         <li><a href='http://www.huffingtonpost.com/taste/'>Taste</a></li>
+        </ul>
+      </div>
+     </div>
+    </div>
+   </div>
+  </li>
+ <li class='n_arts n_empty' id='li_arts' data-beacon='{"p":{"lnid":"arts"}}'>
+  <div class='relative'>
+   <a class='topnav_tab_link' href='http://www.huffingtonpost.com/arts/'>Arts</a>
+   <div class='menu absolute'>
+    <div class='menu_h clearfix'>
+     <div class='trending' data-beacon='{"p":{"lnid":"trending"}}'>  <!-- last update is 20160923_235002 -->
+      <ul>
+        <li id='id_trending_12152420' data-beacon='{"p":{"plid":12152420}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/22/marilyn-monroe-art-exhibition_n_12152420.html?ir=Arts'>Marilyn Monroe Drew A Nude Portrait, And It Ain't Too Shabby</a>
+        </li>
+        <li id='id_trending_12135610' data-beacon='{"p":{"plid":12135610}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/22/langston-hughes-poem-new-york-times_n_12135610.html?ir=Arts'>Powerful Poem About Race Gets A Full Page In The New York Times</a>
+        </li>
+        <li id='id_trending_12156538' data-beacon='{"p":{"plid":12156538}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/22/neo-nazi-trump-supporters-are-going-after-ya-books-now_n_12156538.html?ir=Arts'>Neo-Nazi Trump Supporters Are Going After YA Books Now</a>
+        </li>
+        <li id='id_trending_12142134' data-beacon='{"p":{"plid":12142134}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/22/mouse-latin-textbook-preserved_n_12142134.html?ir=Arts'>Just Try To Look Away From This Absurdly Flat Mouse Found In A 17th-Century Book</a>
+        </li>
+        <li id='id_trending_12135682' data-beacon='{"p":{"plid":12135682}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/22/finally-you-can-figure-out-what-your-patronus-is_n_12135682.html?ir=Arts'>Finally, You Can Figure Out What Your Patronus Is</a>
+        </li>
+       <li class='vertical_info'>
+         <div class='float_right social_widget'>
+          <div class='i_v_fb_like like_fb_like_action i_v_with_count'>
+          </div>
+         </div>
+         <a href='http://www.huffingtonpost.com/arts/'>Go to Arts<span class='arrow'><span></span></span></a>
+        </li>
+       </ul>
+      </div>
+      <div class='more_box'>
+       <strong class='title'>More in Arts</strong>
+       <ul class='vertical_list' data-beacon='{"p":{"lnid":"more_in"}}'>
+        <li><a href='http://www.huffingtonpost.com/news/painting/'>Painting</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/film/'>Film</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/design/'>Design</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/photography/'>Photography</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/theatre/'>Theater</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/architecture/'>Architecture</a></li>
+        </ul>
+        <strong class='title'>You might also like</strong>
+        <ul class='like_list' data-beacon='{"p":{"lnid":"like_list"}}'>
+         <li><a href='http://www.huffingtonpost.com/books/'>Books</a></li>
+         <li><a href='http://www.huffingtonpost.com/new-york/'>NY</a></li>
+         <li><a href='http://www.huffingtonpost.com/los-angeles/'>Los Angeles</a></li>
+        </ul>
+      </div>
+     </div>
+    </div>
+   </div>
+  </li>
+ <li class='n_technology n_empty' id='li_technology' data-beacon='{"p":{"lnid":"technology"}}'>
+  <div class='relative'>
+   <a class='topnav_tab_link' href='http://www.huffingtonpost.com/technology/'>Tech</a>
+   <div class='menu absolute'>
+    <div class='menu_h clearfix'>
+     <div class='trending' data-beacon='{"p":{"lnid":"trending"}}'>  <!-- last update is 20160922_155557 -->
+      <ul>
+        <li id='id_trending_12116590' data-beacon='{"p":{"plid":12116590}}'>
+          <a href='http://www.huffingtonpost.com/lab-notes/a-revolution-in-supercomputing-is-coming-from-a-remote_b_12116590.html?ir=Technology'>Lab Notes: A Revolution In Supercomputing Is Coming. From A Remote Mountain Town. In New Mexico.</a>
+        </li>
+        <li id='id_trending_12137938' data-beacon='{"p":{"plid":12137938}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/22/instagram-drafts-feature_n_12137938.html?ir=Technology'>Instagram Has An Awesome New Drafts Feature</a>
+        </li>
+       <li class='vertical_info'>
+         <div class='float_right social_widget'>
+          <div class='i_v_fb_like like_fb_like_action i_v_with_count'>
+          </div>
+         </div>
+         <a href='http://www.huffingtonpost.com/technology/'>Go to Tech<span class='arrow'><span></span></span></a>
+        </li>
+       </ul>
+      </div>
+      <div class='more_box'>
+       <strong class='title'>More in Tech</strong>
+       <ul class='vertical_list' data-beacon='{"p":{"lnid":"more_in"}}'>
+        <li><a href='http://www.huffingtonpost.com/tedweekends/'>TEDWeekends</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/social-media/'>Social Media</a></li>
+        </ul>
+        <strong class='title'>You might also like</strong>
+        <ul class='like_list' data-beacon='{"p":{"lnid":"like_list"}}'>
+         <li><a href='http://www.huffingtonpost.com/small-business/'>Small Biz</a></li>
+         <li><a href='http://www.huffingtonpost.com/green/'>Green</a></li>
+         <li><a href='http://www.huffingtonpost.com/science/'>Science</a></li>
+         <li><a href='http://www.huffingtonpost.com/new-york/'>NY</a></li>
+         <li><a href='http://www.huffingtonpost.com/san-francisco/'>SF</a></li>
+         <li><a href='http://www.huffingtonpost.com/news/smarter-ideas/'>Smarter Ideas</a></li>
+         <li><a href='http://www.techcrunch.com'>TechCrunch</a></li>
+         <li><a href='http://www.engadget.com'>Engadget</a></li>
+        </ul>
+      </div>
+     </div>
+    </div>
+   </div>
+  </li>
+ <li class='n_green n_empty' id='li_green' data-beacon='{"p":{"lnid":"green"}}'>
+  <div class='relative'>
+   <a class='topnav_tab_link' href='http://www.huffingtonpost.com/green/'>Green</a>
+   <div class='menu absolute'>
+    <div class='menu_h clearfix'>
+     <div class='trending' data-beacon='{"p":{"lnid":"trending"}}'>  <!-- last update is 20160923_234535 -->
+      <ul>
+        <li id='id_trending_12141618' data-beacon='{"p":{"plid":12141618}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/21/summer-2016-floods_n_12141618.html?ir=Green'>Summer 2016 Was The 'Summer Of Floods'</a>
+        </li>
+        <li id='id_trending_12156432' data-beacon='{"p":{"plid":12156432}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/14/the-super-twisted-history-of-the-dakota-access-pipeline_n_12156432.html?ir=Green'>The Super Twisted History Of The Dakota Access Pipeline</a>
+        </li>
+        <li id='id_trending_12158600' data-beacon='{"p":{"plid":12158600}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/23/kris-tompkins-ibera-wetlands_n_12158600.html?ir=Green'>Patagonia's Ex-CEO Moves To Create Argentina's Largest National Park</a>
+        </li>
+        <li id='id_trending_12144462' data-beacon='{"p":{"plid":12144462}}'>
+          <a href='http://www.huffingtonpost.com/stephanie-feldstein/we-dont-need-another-bill_b_12144462.html?ir=Green'>Stephanie Feldstein: We Don't Need Another Billion People to Solve Climate Change</a>
+        </li>
+        <li id='id_trending_12100958' data-beacon='{"p":{"plid":12100958}}'>
+          <a href='http://www.huffingtonpost.com/audra-rundle/10-easy-family-changes-to_b_12100958.html?ir=Green'>Audra Rundle: 10 Easy Family Changes Toward Waste Reduction</a>
+        </li>
+       <li class='vertical_info'>
+         <div class='float_right social_widget'>
+          <div class='i_v_fb_like like_fb_like_action i_v_with_count'>
+          </div>
+         </div>
+         <a href='http://www.huffingtonpost.com/green/'>Go to Green<span class='arrow'><span></span></span></a>
+        </li>
+       </ul>
+      </div>
+      <div class='more_box'>
+       <strong class='title'>More in Green</strong>
+       <ul class='vertical_list' data-beacon='{"p":{"lnid":"more_in"}}'>
+        <li><a href='http://www.huffingtonpost.com/news/energy/'>Energy</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/climate-change/'>Climate Change</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/animals/'>Animals</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/green-technology/'>Green Tech</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/green-holiday/'>Green Holiday</a></li>
+        </ul>
+        <strong class='title'>You might also like</strong>
+        <ul class='like_list' data-beacon='{"p":{"lnid":"like_list"}}'>
+         <li><a href='http://www.huffingtonpost.com/politics/'>Politics</a></li>
+         <li><a href='http://www.huffingtonpost.com/world/'>WorldPost</a></li>
+         <li><a href='http://www.huffingtonpost.com/science/'>Science</a></li>
+         <li><a href='http://www.huffingtonpost.com/healthy-living/'>Healthy Living</a></li>
+         <li><a href='http://www.huffingtonpost.com/news/politics-of-food/'>Politics of Food</a></li>
+        </ul>
+      </div>
+     </div>
+    </div>
+   </div>
+  </li>
+ <li class='n_taste n_empty' id='li_taste' data-beacon='{"p":{"lnid":"taste"}}'>
+  <div class='relative'>
+   <a class='topnav_tab_link' href='http://www.huffingtonpost.com/taste/'>Taste</a>
+   <div class='menu absolute'>
+    <div class='menu_h clearfix'>
+     <div class='trending' data-beacon='{"p":{"lnid":"trending"}}'>  <!-- last update is 20160923_234552 -->
+      <ul>
+        <li id='id_trending_12150162' data-beacon='{"p":{"plid":12150162}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/22/healthy-meal-planner_n_12150162.html?ir=Taste'>Sunday Meal Planner: Get Through The Week With Breakfast Enchiladas And More</a>
+        </li>
+        <li id='id_trending_12150164' data-beacon='{"p":{"plid":12150164}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/22/good-instant-coffee_n_12150164.html?ir=Taste'>The Brands Of Instant Coffee That Are Actually Worth Drinking</a>
+        </li>
+        <li id='id_trending_12133114' data-beacon='{"p":{"plid":12133114}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/20/best-vegetarian-cities_n_12133114.html?ir=Taste'>10 Great Cities To Visit If You're Vegetarian</a>
+        </li>
+        <li id='id_trending_12118480' data-beacon='{"p":{"plid":12118480}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/21/anthony-bourdain-reddit-ama-pumpkin-spice_n_12118480.html?ir=Taste'>Anthony Bourdain Wants To See The Pumpkin Spice Trend 'Drowned In Its Own Blood'</a>
+        </li>
+        <li id='id_trending_12133108' data-beacon='{"p":{"plid":12133108}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/21/pumpkin-spice-foods_n_12133108.html?ir=Taste'>A Ranking Of Pumpkin Spice-Flavored Foods You Can Buy This Fall</a>
+        </li>
+       <li class='vertical_info'>
+         <div class='float_right social_widget'>
+          <div class='i_v_fb_like like_fb_like_action i_v_with_count'>
+          </div>
+         </div>
+         <a href='http://www.huffingtonpost.com/taste/'>Go to Taste<span class='arrow'><span></span></span></a>
+        </li>
+       </ul>
+      </div>
+      <div class='more_box'>
+       <strong class='title'>More in Taste</strong>
+       <ul class='vertical_list' data-beacon='{"p":{"lnid":"more_in"}}'>
+        <li><a href='http://www.huffingtonpost.com/recipes/'>Recipes</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/baking/'>Baking</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/cooking-entertaining/'>Entertaining</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/cooking-healthy/'>Healthy Cooking</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/taste-tests'>Taste Tests</a></li>
+        </ul>
+        <strong class='title'>You might also like</strong>
+        <ul class='like_list' data-beacon='{"p":{"lnid":"like_list"}}'>
+         <li><a href='http://www.huffingtonpost.com/healthy-living/'>Healthy Living</a></li>
+         <li><a href='http://www.huffingtonpost.com/travel/'>Travel</a></li>
+         <li><a href='http://www.huffingtonpost.com/own/'>OWN</a></li>
+        </ul>
+      </div>
+     </div>
+    </div>
+   </div>
+  </li>
+ <li class='n_education n_empty' id='li_education' data-beacon='{"p":{"lnid":"education"}}'>
+  <div class='relative'>
+   <a class='topnav_tab_link' href='http://www.huffingtonpost.com/education/'>Education</a>
+   <div class='menu absolute'>
+    <div class='menu_h clearfix'>
+     <div class='trending' data-beacon='{"p":{"lnid":"trending"}}'>  <!-- last update is 20160923_124010 -->
+      <ul>
+        <li id='id_trending_12099860' data-beacon='{"p":{"plid":12099860}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/13/6-projects-we-love-from-a-crowdfunding-site-for-teachers_n_12099860.html?ir=Education'>6 Projects We Love From A Crowdfunding Site For Teachers</a>
+        </li>
+       <li class='vertical_info'>
+         <div class='float_right social_widget'>
+          <div class='i_v_fb_like like_fb_like_action i_v_with_count'>
+          </div>
+         </div>
+         <a href='http://www.huffingtonpost.com/education/'>Go to Education<span class='arrow'><span></span></span></a>
+        </li>
+       </ul>
+      </div>
+      <div class='more_box'>
+       <strong class='title'>More in Education</strong>
+       <ul class='vertical_list' data-beacon='{"p":{"lnid":"more_in"}}'>
+        <li><a href='http://www.huffingtonpost.com/news/education-reform/'>Education Reform</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/teachers/'>Teachers</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/school-bullying/'>Bullying</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/ed-lection-2012/'>Ed-Lection 2012</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/financial-education/'>Financial Education</a></li>
+        </ul>
+        <strong class='title'>You might also like</strong>
+        <ul class='like_list' data-beacon='{"p":{"lnid":"like_list"}}'>
+         <li><a href='http://www.huffingtonpost.com/college/'>College</a></li>
+         <li><a href='http://www.huffingtonpost.com/teen/'>Teen</a></li>
+         <li><a href='http://www.huffingtonpost.com/impact/'>Impact</a></li>
+         <li><a href='http://www.huffingtonpost.com/parents/'>Parents</a></li>
+         <li><a href='http://www.huffingtonpost.com/healthy-living/'>Healthy Living</a></li>
+        </ul>
+      </div>
+     </div>
+    </div>
+   </div>
+  </li>
+ <li class='n_weird-news n_empty' id='li_weird-news' data-beacon='{"p":{"lnid":"weird-news"}}'>
+  <div class='relative'>
+   <a class='topnav_tab_link' href='http://www.huffingtonpost.com/weird-news/'>Weird News</a>
+   <div class='menu absolute'>
+    <div class='menu_h clearfix'>
+     <div class='trending' data-beacon='{"p":{"lnid":"trending"}}'>  <!-- last update is 20160923_234554 -->
+      <ul>
+        <li id='id_trending_12148802' data-beacon='{"p":{"plid":12148802}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/22/real-life-transformers_n_12148802.html?ir=Weird+News'>Robot In Disguise: Someone Made A Real-Life 'Transformers' Car</a>
+        </li>
+        <li id='id_trending_12152892' data-beacon='{"p":{"plid":12152892}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/22/giraffe-san-diego_n_12152892.html?ir=Weird+News'>Giraffe Wants To Nuzzle Way More Than He Wants To Be On Local News</a>
+        </li>
+        <li id='id_trending_12150236' data-beacon='{"p":{"plid":12150236}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/23/spider-car-crash-oregon_n_12150236.html?ir=Weird+News'>Driver Rolls Car After Stowaway Spider Drops Into Her Lap</a>
+        </li>
+        <li id='id_trending_12155350' data-beacon='{"p":{"plid":12155350}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/23/snake-in-ugg-boot-australia_n_12155350.html?ir=Weird+News'>Deadly, 'Horny' Snake Found Snuggling In Woman's Ugg Boot</a>
+        </li>
+        <li id='id_trending_12160366' data-beacon='{"p":{"plid":12160366}}'>
+          <a href='http://www.huffingtonpost.com/2016/09/23/dog-stabs-owner-colorado_n_12160366.html?ir=Weird+News'>This Is The Cutest Dog That Ever Stabbed Its Owner With A Knife</a>
+        </li>
+       <li class='vertical_info'>
+         <div class='float_right social_widget'>
+          <div class='i_v_fb_like like_fb_like_action i_v_with_count'>
+          </div>
+         </div>
+         <a href='http://www.huffingtonpost.com/weird-news/'>Go to Weird News<span class='arrow'><span></span></span></a>
+        </li>
+       </ul>
+      </div>
+      <div class='more_box'>
+       <strong class='title'>More in Weird News</strong>
+       <ul class='vertical_list' data-beacon='{"p":{"lnid":"more_in"}}'>
+        <li><a href='http://www.huffingtonpost.com/news/dumb-criminals/'>Dumb Crime</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/ufo/'>UFOs</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/world-records/'>World Records</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/anatomical-wonders/'>Anatomical Wonders</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/zombie-apocalypse/'>Zombie Apocalypse</a></li>
+        <li><a href='http://www.huffingtonpost.com/news/octomom'>Octomom</a></li>
+        </ul>
+        <strong class='title'>You might also like</strong>
+        <ul class='like_list' data-beacon='{"p":{"lnid":"like_list"}}'>
+         <li><a href='http://www.huffingtonpost.com/comedy/'>Comedy</a></li>
+         <li><a href='http://www.huffingtonpost.com/technology/'>Tech</a></li>
+         <li><a href='http://www.huffingtonpost.com/science/'>Science</a></li>
+         <li><a href='http://www.huffingtonpost.com/crime/'>Crime</a></li>
+        </ul>
+      </div>
+     </div>
+    </div>
+   </div>
+  </li>
+  <li class='n_live' id='tn-live' data-beacon='{"p":{"lnid":"live"}}'>
+   <div class="relative">
+    <a href="http://live.huffingtonpost.com/">HUFFPOST LIVE</a>
+    <div class="menu absolute right_align">
+     <div class="menu_h clearfix">
+      <div class="trending tn-hp-live" data-beacon='{"p":{"lnid":"trending"}}'>
+       <ul>
+        <li class="vertical_info">
+          <a href="http://live.huffingtonpost.com/" class="link-to-hp-live">Go to HuffPost Live<span class="arrow"><span></span></span></a>
+        </li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </div>
+  </li>
+  <li class='n_all_sections last' id='all-sections' data-beacon='{"p":{"lnid":"all-sections"}}'>
+<div class="relative">
+	<a href="javascript:void(0);">ALL SECTIONS <span class="arrow-down"></span></a>
+	<div class="menu absolute white_bg right_align">
+		<div class="columns clearfix">
+			<div class="column">
+				<strong class="title">News</strong>
+				<div class="vert_holder">
+					<ul class="all_sections_section">
+						<li><a href="http://www.huffingtonpost.com/politics/">Politics</a></li>
+						<li><a href="http://www.huffingtonpost.com/theworldpost/">WorldPost</a></li>
+						<li><a href="http://www.huffingtonpost.com/business/">Business</a></li>
+						<li><a href="http://www.huffingtonpost.com/media/">Media</a></li>
+						<li><a href="http://www.huffingtonpost.com/sports/">Sports</a></li>
+						<li><a href="http://www.huffingtonpost.com/education/">Education</a></li>
+						<li><a href="http://www.huffingtonpost.com/crime/">Crime</a></li>
+						<li><a href="http://www.huffingtonpost.com/weird-news/">Weird News</a></li>
+						<li><a href="http://www.huffingtonpost.com/good-news/">Good News</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="column">
+				<strong class="title">Entertainment</strong>
+				<div class="vert_holder">
+					<ul class="all_sections_section">
+						<li><a href="http://www.huffingtonpost.com/entertainment/">Entertainment</a></li>
+						<li><a href="http://www.huffingtonpost.com/celebrity/">Celebrity</a></li>
+						<li><a href="http://www.huffingtonpost.com/comedy/">Comedy</a></li>
+						<li><a href="http://www.huffingtonpost.com/arts/">Arts & Culture</a></li>
+						<li><a href="http://www.huffingtonpost.com/books/">Books</a></li>
+						<li><a href="http://www.huffingtonpost.com/tv/">TV</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="column">
+				<strong class="title">Life &amp; Style</strong>
+				<div class="vert_holder">
+					<ul class="all_sections_section">
+						<li><a href="http://www.huffingtonpost.com/healthy-living/">Healthy Living</a></li>
+						<li><a href="http://www.huffingtonpost.com/gps-for-the-soul/">GPS for the Soul</a></li>
+						<li><a href="http://www.huffingtonpost.com/style/">Style</a></li>
+						<li><a href="http://www.huffingtonpost.com/home/">Home</a></li>
+						<li><a href="http://www.huffingtonpost.com/taste/">Taste</a></li> 
+						<li><a href="http://www.huffingtonpost.com/weddings/">Weddings</a></li>
+						<li><a href="http://www.huffingtonpost.com/travel/">Travel</a></li>
+						<li><a href="http://www.huffingtonpost.com/parents/">Parents</a></li>
+						<li><a href="http://www.huffingtonpost.com/divorce/">Divorce</a></li>
+						<li><a href="http://www.huffingtonpost.com/50/">Huff/Post 50</a></li>
+						<li><a href="http://www.huffingtonpost.com/own/">OWN</a></li>
+                                               <li><a href="http://www.huffingtonpost.com/drphil/">Dr. Phil</a></li>
+                                               <li><a href="http://www.huffingtonpost.com/news/quiet-revolution/">Quiet Revolution</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="column">
+				<strong class="title">Tech &amp; Science</strong>
+				<div class="vert_holder">
+					<ul class="all_sections_section">
+						<li><a href="http://www.huffingtonpost.com/tech/">Tech</a></li>
+						<li><a href="http://www.huffingtonpost.com/science/">Science</a></li>
+						<li><a href="http://www.huffingtonpost.com/green/">Green</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="column">
+				<strong class="title">Voices</strong>
+				<div class="vert_holder">
+					<ul class="all_sections_section">
+						<li><a href="http://www.huffingtonpost.com/women/">Women</a></li>
+						<li><a href="http://www.huffingtonpost.com/black-voices/">Black Voices</a></li>
+						<li><a href="http://www.huffingtonpost.com/latino-voices/">Latino Voices</a></li>
+						<li><a href="http://www.huffingtonpost.com/queer-voices/">Queer Voices</a></li>
+						<li><a href="http://www.huffingtonpost.com/religion/">Religion</a></li>
+						<li><a href="http://www.huffingtonpost.com/college/">College</a></li>
+						<li><a href="http://www.huffingtonpost.com/teen/">Teen</a></li>
+						<li><a href="http://www.huffingtonpost.com/impact/">Impact</a></li>
+                                                <li><a href="http://www.huffingtonpost.com/news/outspeak/">Outspeak</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="column">
+				<strong class="title">Local</strong>
+				<div class="vert_holder">
+					<ul class="all_sections_section">
+						<li><a href="http://www.huffingtonpost.com/chicago/">Chicago</a></li>
+						<li><a href="http://www.huffingtonpost.com/dc/">DC</a></li>
+						<li><a href="http://www.huffingtonpost.com/denver/">Denver</a></li>
+						<li><a href="http://www.huffingtonpost.com/detroit/">Detroit</a></li>
+						<li><a href="http://www.huffingtonpost.com/hawaii/">Hawaii</a></li>
+						<li><a href="http://www.huffingtonpost.com/los-angeles/">Los Angeles</a></li>
+						<li><a href="http://www.huffingtonpost.com/miami/">Miami</a></li>
+						<li><a href="http://www.huffingtonpost.com/new-york/">New York</a></li>	
+						<li><a href="http://www.huffingtonpost.com/san-francisco/">San Francisco</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="mobile_app_links clearfix">
+			<strong class="title">Our Mobile Apps</strong>
+			<ul class="all_sections_section"> 
+				<li><a href="https://itunes.apple.com/us/app/the-huffington-post/id306621789?mt=8">iOS App</a></li>
+				<li><span class="bullet"></span><a href="https://itunes.apple.com/us/app/huffpost-live/id572584499?ls=1&mt=8">HuffPost Live iOS</a></li>
+				<li><span class="bullet"></span><a href="https://play.google.com/store/apps/details?id=com.huffingtonpost.android&hl=en">Android App</a></li>
+			</ul>
+		</div>			
+	</div>
+</div>
+  </li>
+ </ul>
+</div>
+<div class="new-topnav_second_row clearfix" id="topnav_top_row" data-beacon='{"p":{"mnid":"topnav_subnav","mlid":"topnav"}}'>
+	
+	<div class="featured">
+	
+			<span class="ftd">
+			<span class="bg vertical_color">
+				<a href="http://www.huffingtonpost.com/science/">Science</a>
+			</span>
+			<span class="arrow default_tag_arrow"><span></span></span>
+		</span>
+			<ul>
+        
+        				<li><a href="http://www.huffingtonpost.com/news/asteroids" class="modal_inner ftd_science">Asteroids</a></li>
+	    				<li><a href="http://www.huffingtonpost.com/news/brain/" class="modal_inner ftd_science">Brain</a></li>
+	    				<li><a href="http://www.huffingtonpost.com/news/dinosaurs" class="modal_inner ftd_science">Dinosaurs</a></li>
+	    				<li><a href="http://www.huffingtonpost.com/news/girls-in-stem/" class="modal_inner ftd_science">Girls In STEM</a></li>
+	    				<li><a href="http://huffingtonpost.com/news/human-origins" class="modal_inner ftd_science">Human Origins</a></li>
+	    				<li><a href="http://huffingtonpost.com/news/iss" class="modal_inner ftd_science">ISS</a></li>
+	    				<li><a href="http://www.huffingtonpost.com/news/mars-rover" class="modal_inner ftd_science">Mars Rover</a></li>
+	    				<li><a href="http://huffingtonpost.com/news/physics" class="modal_inner ftd_science">Physics</a></li>
+	    				<li><a href="http://huffingtonpost.com/news/search-for-et" class="modal_inner ftd_science">Search For E.T.</a></li>
+	    				<li><a href="http://www.huffingtonpost.com/news/spaceflight" class="modal_inner ftd_science">Spaceflight</a></li>
+	    				<li><a href="http://www.huffingtonpost.com/news/talk-nerdy-to-me/" class="modal_inner ftd_science">Talk Nerdy To Me</a></li>
+	    				<li><a href="http://www.huffingtonpost.com/news/weird-science/" class="modal_inner ftd_science">Weird Science</a></li>
+	    	
+		</ul>
+	</div>
+</div>
+<script type="text/javascript">
+	huff.emit('topnav/loaded', document.getElementById('topnav_top'));
+</script>
+</div>
+			<!-- /Top nav -->
+			
+			<div id="updated_and_search" class="clearfix white_bg" data-beacon='{"p":{"mlid":"wires_and_alert_signup"}}'>
+				<div class="left" style="margin:0 auto;float:none;">
+                    <div id="ap_wire_container">
+					</div>
+<script type="text/javascript">
+if ($('ap_array_size'))
+{
+var ap_wires_unit = new CommonPaginator({'moduleName': 'ap_wires',
+										'maxPage': $('ap_array_size').innerHTML,
+										'is_update_current_page': false,
+										'is_circle': true,
+										'is_whole_circle': true});
+}
+</script>
+	        </div>
+	    </div>    </div>
+</div>
+<!-- AVATAR LOADER -->
+   <script type="text/javascript">
+     HuffPoUtil.AvatarLoader.loadAvatar('http://www.huffingtonpost.com');
+   </script>
+
+
+<div class="clear"></div><div id="curtain_wrapper"><div id="curtainunit"></div></div>
+<div class="clear"></div>
+<!-- Placeholder for promo on front pages -->
+<div id="huff_promo_space"></div>
+
+
+
+
+<a name="slide_image_frontpage"></a>
+
+<div id="grid_left_bl" class="grid grid_v_fp_left_bl">
+
+	                <div id="top_wrapper" class="layout_12 clearfix" data-beacon="{&quot;p&quot;:{&quot;mlid&quot;:&quot;splash&quot;&quot;lnid&quot;:&quot;autopilot&quot;}}">
+                <!-- CURRENT LAYOUT 12 -->
+                <!-- BEGIN_CONDITIONAL top_wrapper CONTENT -->
+                <!-- Entry Blog 2 -->
+                
+<div id="entry_12161814" onmouseover="TrackingData.entry_12161814={id:12161814,blog_id:2,rank:0,zone:1,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12161814,"mpid":1,"lnid":"autopilot"}}'>
+	<h5>
+		<a href="http://www.huffingtonpost.com/2016/09/23/stephen-hawking-aliens_n_12161814.html?utm_hp_ref=science&ir=Science" ></a>
+		<div id="splash_block" style="width: 600px; margin: auto; ">
+			<a href="http://www.huffingtonpost.com/2016/09/23/stephen-hawking-aliens_n_12161814.html?utm_hp_ref=science&ir=Science" ></a>
+			<h2>
+				<a href="http://www.huffingtonpost.com/2016/09/23/stephen-hawking-aliens_n_12161814.html?utm_hp_ref=science&ir=Science " style="font-size: 40px; color: #cc8029 !important; font-family: Arial,'Helvetica Neue',Helvetica,sans-serif !important; line-height: 1.05;">If Aliens Call, We Might Not Want To Answer, Says Stephen Hawking</a>
+				<br />
+			</h2>
+			<div id="splash_hdr_spacer" class="splash_hdr_spacer"></div>
+						<div style="text-align:center">
+				<div id="headline_image_container" class="relative">
+					<a href="http://www.huffingtonpost.com/2016/09/23/stephen-hawking-aliens_n_12161814.html?utm_hp_ref=science&ir=Science " id="entry_id_12161814">
+						<img id="headline_image" class="quickread_link" width="600" height="249" src="http://img.huffingtonpost.com/asset/600_275/57e59fd61700002900ac6c26.jpg"/>
+					</a>
+					<span class="absolute image-credit arial_11">Lucas Jackson / Reuters</span>				</div>
+			</div>
+			<span id="sub_headline_preview" style="word-wrap: break-word;"></span>
+		</div>
+	</h5>
+	<ul class="meta_links"> 
+		<li><a href="http://www.huffingtonpost.com/2016/09/23/stephen-hawking-aliens_n_12161814.html?utm_hp_ref=science&ir=Science#comments" data-beacon='{"p":{"lnid":"cmnts"}}'>Comments <span class="comment_count" id="comment_count_12161814"></span></a></li>
+	</ul>
+</div>
+
+
+<div class="two_up wide">
+	<ul>
+		<li class="entry right_up" id="entry_12156372" onmouseover="TrackingData.entry_12156372={id:12156372,blog_id:2,rank:1,zone:1,vertical:72,ab_headline:'a'};">
+			<a href="http://www.huffingtonpost.com/2016/09/23/proprioception-sixth-sense_n_12156372.html?utm_hp_ref=science&ir=Science" >
+				<img width="260" height="75" src="http://img.huffingtonpost.com/asset/260_75/57e545bf1700002900ac6a7c.jpg">
+			</a>
+			<h5>
+				<a class="arial_16 color_1A1A1A center margin_top_5 block" href="http://www.huffingtonpost.com/2016/09/23/proprioception-sixth-sense_n_12156372.html?utm_hp_ref=science&ir=Science" >Two People With Rare Disorder Offer Clues To Humans' Mysterious ‘Sixth Sense’</a>
+			</h5>
+			<ul class="meta_links">
+				<li><a href="http://www.huffingtonpost.com/2016/09/23/proprioception-sixth-sense_n_12156372.html?utm_hp_ref=science&ir=Science">Comments <span class="comment_count" id="comment_count_12156372"></span></a></li>
+			</ul>
+		</li>
+                        
+
+		<li class="entry left_up" id="entry_12155520" onmouseover="TrackingData.entry_12155520={id:12155520,blog_id:2,rank:2,zone:1,vertical:72,ab_headline:'a'};">
+			<a href="http://www.huffingtonpost.com/2016/09/20/aquatic-cocaine-is-killing-the-worlds-cutest-porpoise_n_12155520.html?utm_hp_ref=science&ir=Science" >
+				<img width="260" height="75" src="http://img.huffingtonpost.com/asset/260_75/57e1939e180000113cbd2bcb.jpg">
+			</a>
+			<h5>
+				<a class="arial_16 color_1A1A1A center margin_top_5 block" href="http://www.huffingtonpost.com/2016/09/20/aquatic-cocaine-is-killing-the-worlds-cutest-porpoise_n_12155520.html?utm_hp_ref=science&ir=Science" >'Aquatic Cocaine' Is Killing The World's Cutest Porpoise</a>
+			</h5>
+			<ul class="meta_links">
+				<li><a href="http://www.huffingtonpost.com/2016/09/20/aquatic-cocaine-is-killing-the-worlds-cutest-porpoise_n_12155520.html?utm_hp_ref=science&ir=Science">Comments <span class="comment_count" id="12155520"></span></a></li>
+			</ul>
+		</li>
+	</ul>
+	<div class="clear"></div>
+</div>
+
+                </div>
+                	<div class="clear"></div>
+	
+	<!-- LEFT COLUMN -->
+	<div class="margin_top_10">
+		<!-- BLOGS -->
+		<div id="the_blogs" class="grid_v_fp_half_bl grid_r_border georgia" data-beacon='{"p":{"mlid":"col1"}}'>
+	<h3 class="featured-blog-header uppercase">featured blog posts</h3>
+       <div class="clear"></div>
+ 
+            <div class="highlights" id="highlights">
+	        </div>
+
+            <!-- In scroll_vertical_featured_posts.html -->
+
+
+
+
+
+
+
+
+	<div class="clear"></div>
+
+	<div id="featured_posts_long" data-beacon='{"p":{"mnid":"featBlg"}}'>
+		<div id="featured_upper">
+
+			<div id="hp_featured_posts_main">
+				<div id="hp_featured_posts_all_pages">
+				
+					<!-- BEGIN hp_featured_posts_all_pages CONTENT -->
+
+					<div id="hp_featured_posts_page_1">
+
+
+
+<div class="entry " id="blog_12150298" data-beacon='{"p":{"plid":12150298,"mpid":0,"lnid":"autopilot"}}'>
+	<div class="col entry_left">
+	</div>
+	<div class="col entry_right">
+		<h2><a href="http://www.huffingtonpost.com/researchgate/these-researchers-want-yo_b_12150298.html?utm_hp_ref=science&ir=Science"  style="line-height: 18px !important;font-weight: bold;font-size: 16px;font-family: arial;color: #1A1A1A;">These researchers want you to mail them your gut bacteria</a></h2>
+		<div class="green_entry_bar"></div>
+	</div>
+	<div class="clear"></div>
+			
+			<p></p>
+			<div class="author_bottom_desc">
+      <div class="blogger_img">
+		<a href="http://www.huffingtonpost.com/researchgate/"><span id="blogger-headshot" style="background-image: url(http://s.huffpost.com/contributors/researchgate/headshot.jpg);"></span></a>
+	</div>
+	<div class="blogger_credit">
+	   <p class="byline_timestamp blogger_name"><a href="http://www.huffingtonpost.com/researchgate/">ResearchGate</a></p>
+	   <p class="author_teaser">A social network for scientists that aims to connect the world of science and make research open to all.</p>
+	</div>
+	
+   </div>
+	
+</div>
+<div class="entry " id="blog_12119642" data-beacon='{"p":{"plid":12119642,"mpid":1,"lnid":"autopilot"}}'>
+	<div class="col entry_left">
+	</div>
+	<div class="col entry_right">
+		<h2><a href="http://www.huffingtonpost.com/michael-d-shaw/cannabis-and-cancer_b_12119642.html?utm_hp_ref=science&ir=Science"  style="line-height: 18px !important;font-weight: bold;font-size: 16px;font-family: arial;color: #1A1A1A;">Cannabis And Cancer</a></h2>
+		<div class="green_entry_bar"></div>
+	</div>
+	<div class="clear"></div>
+			
+			<p>The stigmatization of cannabis is fading, but it won't come easy.</p>
+			<div class="author_bottom_desc">
+      <div class="blogger_img">
+		<a href="http://www.huffingtonpost.com/michael-d-shaw/"><span id="blogger-headshot" style="background-image: url(http://s.huffpost.com/contributors/michael-d-shaw/headshot.jpg);"></span></a>
+	</div>
+	<div class="blogger_credit">
+	   <p class="byline_timestamp blogger_name"><a href="http://www.huffingtonpost.com/michael-d-shaw/">Michael D. Shaw</a></p>
+	   <p class="author_teaser">Business owner, commentator, righter</p>
+	</div>
+	
+   </div>
+	
+</div>
+<div class="entry " id="blog_12084834" data-beacon='{"p":{"plid":12084834,"mpid":2,"lnid":"autopilot"}}'>
+	<div class="col entry_left">
+	</div>
+	<div class="col entry_right">
+		<h2><a href="http://www.huffingtonpost.com/megan-bramefinkelstein/can-we-get-rid-of-epipen-_b_12084834.html?utm_hp_ref=science&ir=Science"  style="line-height: 18px !important;font-weight: bold;font-size: 16px;font-family: arial;color: #1A1A1A;">Can We Get Rid Of EpiPen Price Gouges With Science?  An Interview With Ajan Reginald</a></h2>
+		<div class="green_entry_bar"></div>
+	</div>
+	<div class="clear"></div>
+			
+			<p>Lately this nonsense with price gouging made me wonder if there were alternatives. What if we could somehow cut out the middleman of pharmaceutical companies and instead look to something else for a solution?</p>
+			<div class="author_bottom_desc">
+      <div class="blogger_img">
+		<a href="http://www.huffingtonpost.com/megan-bramefinkelstein/"><span id="blogger-headshot" style="background-image: url(http://s.huffpost.com/contributors/megan-bramefinkelstein/headshot.jpg);"></span></a>
+	</div>
+	<div class="blogger_credit">
+	   <p class="byline_timestamp blogger_name"><a href="http://www.huffingtonpost.com/megan-bramefinkelstein/">Megan Brame-Finkelstein</a></p>
+	   <p class="author_teaser">Award-winning entrepreneur, podcaster, small business ninja.</p>
+	</div>
+	
+   </div>
+	
+</div>
+<div class="entry " id="blog_12124206" data-beacon='{"p":{"plid":12124206,"mpid":3,"lnid":"autopilot"}}'>
+	<div class="col entry_left">
+	</div>
+	<div class="col entry_right">
+		<h2><a href="http://www.huffingtonpost.com/jonathan-d-moreno/testing-in-the-east-an-ep_b_12124206.html?utm_hp_ref=science&ir=Science"  style="line-height: 18px !important;font-weight: bold;font-size: 16px;font-family: arial;color: #1A1A1A;">"Testing in the East": An Episode in Cold War Bioethics</a></h2>
+		<div class="green_entry_bar"></div>
+	</div>
+	<div class="clear"></div>
+			
+			<p></p>
+			<div class="author_bottom_desc">
+      <div class="blogger_img">
+		<a href="http://www.huffingtonpost.com/jonathan-d-moreno/"><span id="blogger-headshot" style="background-image: url(http://s.huffpost.com/contributors/jonathan-d-moreno/headshot.jpg);"></span></a>
+	</div>
+	<div class="blogger_credit">
+	   <p class="byline_timestamp blogger_name"><a href="http://www.huffingtonpost.com/jonathan-d-moreno/">Jonathan D. Moreno</a></p>
+	   <p class="author_teaser">Professor at the University of Pennsylvania</p>
+	</div>
+	
+   </div>
+	
+</div>
+<div class="entry " id="blog_12079208" data-beacon='{"p":{"plid":12079208,"mpid":4,"lnid":"autopilot"}}'>
+	<div class="col entry_left">
+	</div>
+	<div class="col entry_right">
+		<h2><a href="http://www.huffingtonpost.com/llewellyn-king/no-end-to-the-cold-wars-e_b_12079208.html?utm_hp_ref=science&ir=Science"  style="line-height: 18px !important;font-weight: bold;font-size: 16px;font-family: arial;color: #1A1A1A;">No End To The Cold War's Expensive Nuclear Legacy</a></h2>
+		<div class="green_entry_bar"></div>
+	</div>
+	<div class="clear"></div>
+			
+			<p>It was the Cold War, and it was a potential race to Armageddon. The Soviet Union produced an excessive number of nuclear warheads, and we did likewise.</p>
+			<div class="author_bottom_desc">
+      <div class="blogger_img">
+		<a href="http://www.huffingtonpost.com/llewellyn-king/"><span id="blogger-headshot" style="background-image: url(http://s.huffpost.com/contributors/llewellyn-king/headshot.jpg);"></span></a>
+	</div>
+	<div class="blogger_credit">
+	   <p class="byline_timestamp blogger_name"><a href="http://www.huffingtonpost.com/llewellyn-king/">Llewellyn King</a></p>
+	   <p class="author_teaser">Journalist, columnist, broadcaster, internationalist, energy expert, science and technology enthusiast, lecturer, public speaker</p>
+	</div>
+	
+   </div>
+	
+</div>
+<div class="entry " id="blog_12117976" data-beacon='{"p":{"plid":12117976,"mpid":5,"lnid":"autopilot"}}'>
+	<div class="col entry_left">
+	</div>
+	<div class="col entry_right">
+		<h2><a href="http://www.huffingtonpost.com/christopher-king/the-science-of-nobel-priz_b_12117976.html?utm_hp_ref=science&ir=Science"  style="line-height: 18px !important;font-weight: bold;font-size: 16px;font-family: arial;color: #1A1A1A;">The Science of Nobel Prize Prediction</a></h2>
+		<div class="green_entry_bar"></div>
+	</div>
+	<div class="clear"></div>
+			
+			<p></p>
+			<div class="author_bottom_desc">
+      <div class="blogger_img">
+		<a href="http://www.huffingtonpost.com/christopher-king/"><span id="blogger-headshot" style="background-image: url(http://s.huffpost.com/contributors/christopher-king/headshot.jpg);"></span></a>
+	</div>
+	<div class="blogger_credit">
+	   <p class="byline_timestamp blogger_name"><a href="http://www.huffingtonpost.com/christopher-king/">Christopher King</a></p>
+	   <p class="author_teaser">Editor at Thomson Reuters</p>
+	</div>
+	
+   </div>
+	
+</div>
+<div class="entry " id="blog_12116590" data-beacon='{"p":{"plid":12116590,"mpid":6,"lnid":"autopilot"}}'>
+	<div class="col entry_left">
+	</div>
+	<div class="col entry_right">
+		<h2><a href="http://www.huffingtonpost.com/lab-notes/a-revolution-in-supercomputing-is-coming-from-a-remote_b_12116590.html?utm_hp_ref=science&ir=Science"  style="line-height: 18px !important;font-weight: bold;font-size: 16px;font-family: arial;color: #1A1A1A;">A Revolution In Supercomputing Is Coming. From A Remote Mountain Town. In New Mexico.</a></h2>
+		<div class="green_entry_bar"></div>
+	</div>
+	<div class="clear"></div>
+				
+			<div class="image_wrapper relative" style="width: 300px;float:left;">
+				<a href="http://www.huffingtonpost.com/lab-notes/a-revolution-in-supercomputing-is-coming-from-a-remote_b_12116590.html?utm_hp_ref=science&ir=Science" >
+					<img src="http://img.huffingtonpost.com/asset/300_125/57e16ce1130000140039d473.jpg" alt="ATHENA IMAGE" />
+				</a>
+				<span class="absolute image-credit arial_11">Los Alamos National Laboratory</span>
+			</div> 
+		
+			<p></p>
+			<div class="author_bottom_desc">
+      <div class="blogger_img">
+		<a href="http://www.huffingtonpost.com/lab-notes/"><span id="blogger-headshot" style="background-image: url(http://s.huffpost.com/contributors/lab-notes/headshot.jpg);"></span></a>
+	</div>
+	<div class="blogger_credit">
+	   <p class="byline_timestamp blogger_name"><a href="http://www.huffingtonpost.com/lab-notes/">Lab Notes</a></p>
+	   <p class="author_teaser">News from Los Alamos National Laboratory</p>
+	</div>
+	
+   </div>
+	
+</div>
+<div class="entry " id="blog_12096930" data-beacon='{"p":{"plid":12096930,"mpid":7,"lnid":"autopilot"}}'>
+	<div class="col entry_left">
+	</div>
+	<div class="col entry_right">
+		<h2><a href="http://www.huffingtonpost.com/johan-rockstrom/from-compassion-to-care-o_b_12096930.html?utm_hp_ref=science&ir=Science"  style="line-height: 18px !important;font-weight: bold;font-size: 16px;font-family: arial;color: #1A1A1A;">From Compassion to Care on Climate: Why The Dalai Lama's Visit to Brussels Raises Some Serious Questions For The EU</a></h2>
+		<div class="green_entry_bar"></div>
+	</div>
+	<div class="clear"></div>
+			
+			<p></p>
+			<div class="author_bottom_desc">
+      <div class="blogger_img">
+		<a href="http://www.huffingtonpost.com/johan-rockstrom/"><span id="blogger-headshot" style="background-image: url(http://s.huffpost.com/contributors/johan-rockstrom/headshot.jpg);"></span></a>
+	</div>
+	<div class="blogger_credit">
+	   <p class="byline_timestamp blogger_name"><a href="http://www.huffingtonpost.com/johan-rockstrom/">Johan Rockstr&ouml;m</a></p>
+	   <p class="author_teaser">Director of the Stockholm Resilience Centre at Stockholm University</p>
+	</div>
+	
+   </div>
+	
+</div>
+<div class="entry " id="blog_12096890" data-beacon='{"p":{"plid":12096890,"mpid":8,"lnid":"autopilot"}}'>
+	<div class="col entry_left">
+	</div>
+	<div class="col entry_right">
+		<h2><a href="http://www.huffingtonpost.com/johan-rockstrom/from-compassion-to-care-o_b_12096890.html?utm_hp_ref=science&ir=Science"  style="line-height: 18px !important;font-weight: bold;font-size: 16px;font-family: arial;color: #1A1A1A;">From Compassion to Care on Climate: Why The Dalai Lama's Visit to Brussels Raises Some Serious Questions For The EU</a></h2>
+		<div class="green_entry_bar"></div>
+	</div>
+	<div class="clear"></div>
+			
+			<p></p>
+			<div class="author_bottom_desc">
+      <div class="blogger_img">
+		<a href="http://www.huffingtonpost.com/johan-rockstrom/"><span id="blogger-headshot" style="background-image: url(http://s.huffpost.com/contributors/johan-rockstrom/headshot.jpg);"></span></a>
+	</div>
+	<div class="blogger_credit">
+	   <p class="byline_timestamp blogger_name"><a href="http://www.huffingtonpost.com/johan-rockstrom/">Johan Rockstr&ouml;m</a></p>
+	   <p class="author_teaser">Director of the Stockholm Resilience Centre at Stockholm University</p>
+	</div>
+	
+   </div>
+	
+</div>
+<div class="entry " id="blog_11996752" data-beacon='{"p":{"plid":11996752,"mpid":9,"lnid":"autopilot"}}'>
+	<div class="col entry_left">
+	</div>
+	<div class="col entry_right">
+		<h2><a href="http://www.huffingtonpost.com/allen-frances/connecting-the-dots-between-the-opioid-epidemic-and-philanthropy_b_11996752.html?utm_hp_ref=science&ir=Science"  style="line-height: 18px !important;font-weight: bold;font-size: 16px;font-family: arial;color: #1A1A1A;">Connecting The Dots Between The Opioid Epidemic And Philanthropy</a></h2>
+		<div class="green_entry_bar"></div>
+	</div>
+	<div class="clear"></div>
+				
+			<div class="image_wrapper relative" style="width: 300px;float:left;">
+				<a href="http://www.huffingtonpost.com/allen-frances/connecting-the-dots-between-the-opioid-epidemic-and-philanthropy_b_11996752.html?utm_hp_ref=science&ir=Science" >
+					<img src="http://i.huffpost.com/gen/4702228/images/n-OXYCONTIN-medium.jpg" alt="OXYCONTIN" />
+				</a>
+				<span class="absolute image-credit arial_11">Liz O. Baylen via Getty Images</span>
+			</div> 
+		
+			<p>If the Sacklers really are philanthropists, and not just seekers of fame, they should want to do the right thing and help those they have hurt.</p>
+			<div class="author_bottom_desc">
+      <div class="blogger_img">
+		<a href="http://www.huffingtonpost.com/allen-frances/"><span id="blogger-headshot" style="background-image: url(http://s.huffpost.com/contributors/allen-frances/headshot.jpg);"></span></a>
+	</div>
+	<div class="blogger_credit">
+	   <p class="byline_timestamp blogger_name"><a href="http://www.huffingtonpost.com/allen-frances/">Allen Frances</a></p>
+	   <p class="author_teaser">Professor Emeritus, Duke University</p>
+	</div>
+	
+   </div>
+	
+</div>
+<div class="entry " id="blog_12074408" data-beacon='{"p":{"plid":12074408,"mpid":10,"lnid":"autopilot"}}'>
+	<div class="col entry_left">
+	</div>
+	<div class="col entry_right">
+		<h2><a href="http://www.huffingtonpost.com/marianne-schnall/a-cosmic-perspective-inte_b_12074408.html?utm_hp_ref=science&ir=Science"  style="line-height: 18px !important;font-weight: bold;font-size: 16px;font-family: arial;color: #1A1A1A;">A Cosmic Perspective: Interview With StarTalk's Neil deGrasse Tyson</a></h2>
+		<div class="green_entry_bar"></div>
+	</div>
+	<div class="clear"></div>
+			
+			<p>When my daughter Lotus recently became interested in astronomy, and we began watching shows and documentaries about space and the universe, we discovered Neil deGrasse Tyson, the dynamic host of the National Geographic talk show "StarTalk."</p>
+			<div class="author_bottom_desc">
+      <div class="blogger_img">
+		<a href="http://www.huffingtonpost.com/marianne-schnall/"><span id="blogger-headshot" style="background-image: url(http://s.huffpost.com/contributors/marianne-schnall/headshot.jpg);"></span></a>
+	</div>
+	<div class="blogger_credit">
+	   <p class="byline_timestamp blogger_name"><a href="http://www.huffingtonpost.com/marianne-schnall/">Marianne Schnall</a></p>
+	   <p class="author_teaser">Writer/Interviewer</p>
+	</div>
+	
+   </div>
+	
+</div>
+  <!-- hp_featured_posts_page_1 -->
+    <!-- END hp_featured_posts_all_pages CONTENT -->
+      </div><!-- hp_featured_posts_all_pages -->
+				
+				<script type="text/javascript">
+					huff.emit('content/update', '#hp_featured_posts_page_1');
+                    
+                    var curr_page = 1;
+                    var blog_column_edit_promo = '<div id="all_sponsored_posts_page_1_wrapper">' + jQuery('#all_sponsored_posts_page_1_wrapper').html() + '</div>';
+                    jQuery('#all_sponsored_posts_page_1_wrapper').remove();
+                    jQuery('#hp_featured_posts_page_1 div.entry').eq(blog_column_edit_promo_position - 1).after(blog_column_edit_promo);
+                    jQuery('#hp_featured_posts_main>.preview').remove();
+				</script>	
+			</div><!-- hp_featured_posts_main -->
+	
+		</div><!-- featured_upper -->
+	</div><!-- featured_posts_long -->
+
+
+    <div class='featured_post_underline'></div>
+
+	<!-- Dont miss HP bloggers -->
+	<div class="feature_title_wrap feature_title_bg" >
+	 <div class="uppercase float_left bold arial_12" id="all_featured_posts_title">don't miss huffpost bloggers</div>
+	</div>
+	<div class="clear"></div>
+
+	<div id="hp_dont_miss_main" data-beacon='{"p":{"mnid":"dont_miss_blogs"}}'>
+		<div id="hp_dont_miss_all_pages">
+<!--?= $b['image_size'] ?-->
+<div class="new_dont_miss_container" data-beacon='{"p":{"plid":10471584}}'>
+	<!-- headshot -->
+	<div class="float_left blogger_img" data-beacon='{"p":{"lnid":"img"}}'>
+		<a href="/geoffrey-r-stone/">
+			<span id="blogger-headshot" style="background-image: url(http://s.huffpost.com/contributors/geoffrey-r-stone/headshot.jpg);"></span>
+		</a>
+	</div>	
+	<!-- title -->
+	<div class="blogger_credit">
+		<div class="uppercase vertical_css" data-beacon='{"p":{"lnid":"vert"}}'><a href="/politics/" class="bold arial_11 white_bg" style="color:#0088C3;">politics</a></div>
+		<a class="new_dont_miss_entry_author" data-beacon='{"p":{"lnid":"auth"}}' href="/geoffrey-r-stone/">Geoffrey R. Stone</a>
+		<div class="new_dont_miss_entry_title" data-beacon='{"p":{"lnid":"hdln"}}'><a href="http://www.huffingtonpost.com/geoffrey-r-stone/an-open-letter-to-those-w_b_10471584.html?utm_hp_ref=science">An Open Letter to Those Who Feel the Bern</a></div>
+	</div>
+	<div class="clear"></div>
+</div>
+<!--?= $b['image_size'] ?-->
+<div class="new_dont_miss_container" data-beacon='{"p":{"plid":10463280}}'>
+	<!-- headshot -->
+	<div class="float_left blogger_img" data-beacon='{"p":{"lnid":"img"}}'>
+		<a href="/bob-casey/">
+			<span id="blogger-headshot" style="background-image: url(http://s.huffpost.com/contributors/bob-casey/headshot.jpg);"></span>
+		</a>
+	</div>	
+	<!-- title -->
+	<div class="blogger_credit">
+		<div class="uppercase vertical_css" data-beacon='{"p":{"lnid":"vert"}}'><a href="/politics/" class="bold arial_11 white_bg" style="color:#0088C3;">politics</a></div>
+		<a class="new_dont_miss_entry_author" data-beacon='{"p":{"lnid":"auth"}}' href="/bob-casey/">Sen. Bob Casey</a>
+		<div class="new_dont_miss_entry_title" data-beacon='{"p":{"lnid":"hdln"}}'><a href="http://www.huffingtonpost.com/bob-casey/why-i-changed-on-guns-congress_b_10463280.html?utm_hp_ref=science">Why I Changed On Guns And Why Congress Should, Too</a></div>
+	</div>
+	<div class="clear"></div>
+</div>
+<!--?= $b['image_size'] ?-->
+<div class="new_dont_miss_container" data-beacon='{"p":{"plid":10492068}}'>
+	<!-- headshot -->
+	<div class="float_left blogger_img" data-beacon='{"p":{"lnid":"img"}}'>
+		<a href="/sen-barbara-boxer/">
+			<span id="blogger-headshot" style="background-image: url(http://s.huffpost.com/contributors/sen-barbara-boxer/headshot.jpg);"></span>
+		</a>
+	</div>	
+	<!-- title -->
+	<div class="blogger_credit">
+		<div class="uppercase vertical_css" data-beacon='{"p":{"lnid":"vert"}}'><a href="/politics/" class="bold arial_11 white_bg" style="color:#0088C3;">politics</a></div>
+		<a class="new_dont_miss_entry_author" data-beacon='{"p":{"lnid":"auth"}}' href="/sen-barbara-boxer/">Sen. Barbara Boxer</a>
+		<div class="new_dont_miss_entry_title" data-beacon='{"p":{"lnid":"hdln"}}'><a href="http://www.huffingtonpost.com/sen-barbara-boxer/on-gun-violence---lets-co_b_10492068.html?utm_hp_ref=science">On Gun Violence -- Let&rsquo;s Come Together And Stop the Heartbreak</a></div>
+	</div>
+	<div class="clear"></div>
+</div>
+<!--?= $b['image_size'] ?-->
+<div class="new_dont_miss_container" data-beacon='{"p":{"plid":10465636}}'>
+	<!-- headshot -->
+	<div class="float_left blogger_img" data-beacon='{"p":{"lnid":"img"}}'>
+		<a href="/michael-roth/">
+			<span id="blogger-headshot" style="background-image: url(http://s.huffpost.com/contributors/michael-roth/headshot.jpg);"></span>
+		</a>
+	</div>	
+	<!-- title -->
+	<div class="blogger_credit">
+		<div class="uppercase vertical_css" data-beacon='{"p":{"lnid":"vert"}}'><a href="/college/" class="bold arial_11 white_bg" style="color:#569ae1;">college</a></div>
+		<a class="new_dont_miss_entry_author" data-beacon='{"p":{"lnid":"auth"}}' href="/michael-roth/">Michael Roth</a>
+		<div class="new_dont_miss_entry_title" data-beacon='{"p":{"lnid":"hdln"}}'><a href="http://www.huffingtonpost.com/michael-roth/hamilton-and-liberal-educ_b_10465636.html?utm_hp_ref=science">&rsquo;Hamilton&rsquo; and Liberal Education</a></div>
+	</div>
+	<div class="clear"></div>
+</div>
+<!--?= $b['image_size'] ?-->
+<div class="new_dont_miss_container" data-beacon='{"p":{"plid":10444940}}'>
+	<!-- headshot -->
+	<div class="float_left blogger_img" data-beacon='{"p":{"lnid":"img"}}'>
+		<a href="/dr-phil/">
+			<span id="blogger-headshot" style="background-image: url(http://s.huffpost.com/contributors/dr-phil/headshot.jpg);"></span>
+		</a>
+	</div>	
+	<!-- title -->
+	<div class="blogger_credit">
+		<div class="uppercase vertical_css" data-beacon='{"p":{"lnid":"vert"}}'><a href="/drphil/" class="bold arial_11 white_bg" style="color:#058B7B;">dr. phil</a></div>
+		<a class="new_dont_miss_entry_author" data-beacon='{"p":{"lnid":"auth"}}' href="/dr-phil/">Dr. Phil McGraw</a>
+		<div class="new_dont_miss_entry_title" data-beacon='{"p":{"lnid":"hdln"}}'><a href="http://www.huffingtonpost.com/dr-phil/standing-solidarity-victims-orlando-shooting_b_10444940.html?utm_hp_ref=science">Standing In Solidarity With Victims Of The Orlando Shooting</a></div>
+	</div>
+	<div class="clear"></div>
+</div>
+		</div> <!-- hp_dont_miss_all_pages -->
+	</div> <!-- hp_dont_miss_main -->
+
+</div><!-- all_featured_posts -->
+			<div id='recent-blogs-display-container'></div>
+            
+		</div><!-- /left_column -->
+		<script type="text/javascript">huff.emit('content/update', '#left_column');</script>
+		
+		
+		<!-- NEWS COLUMN -->
+		<div id="center_column" class="grid_v_fp_half_bl">
+
+            <div id="center_entries_container" data-beacon='{"p":{"mlid":"col2"}}'>
+<!-- BEGIN center_entries_container CONTENT -->
+
+    
+
+
+            
+<!-- Entry Blog 2 -->
+	
+
+
+
+
+
+<div id="entry_9805970" onmouseover="TrackingData.entry_9805970={id:9805970,blog_id:2,rank:1,zone:5,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":9805970,"mpid":1}}'>
+
+
+    <h2><a href="http://www.huffingtonpost.com/2016/04/27/lighting-boost-learning-concentration_n_9805970.html?utm_hp_ref=science"><div class='float_left shadow default_tag science_vertical_background white arial_12 bold'>WHAT'S WORKING</div><div class='science_vertical_background default_tag_arrow'></div>How Just The Right Lighting May Help Students Learn</a></h2><div class="image_wrapper relative"><a href="http://www.huffingtonpost.com/2016/04/27/lighting-boost-learning-concentration_n_9805970.html?utm_hp_ref=science"><img class="unloaded-image quickread_link" id="image_9805970" longdesc="http://img.huffingtonpost.com/asset/300_219/5722398c160000e90031cfd4.jpg" alt="Education Concentration Dreaming Thoughtfulness So" src="/images/trans.gif" /></a><div class="absolute image-credit arial_11">Jonathan Kirn via Getty Images</div></div>
+
+
+    
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+
+<!-- END center_entries_container CONTENT -->
+</div>
+<div id="entry_12154738" onmouseover="TrackingData.entry_12154738={id:12154738,blog_id:2,rank:0,zone:5,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12154738,"mpid":0,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/23/breathtaking-storm-photos_n_12154738.html?utm_hp_ref=science&ir=Science" >Breathtaking Photos That Capture The Terrible Beauty Of Big Storms</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/23/breathtaking-storm-photos_n_12154738.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12154738" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57e53ae41700002a00ac6a51.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">PHOTOGRAPH BY MITCH DOBROWNER</span>   </div>
+</div>
+<div id="entry_12150118" onmouseover="TrackingData.entry_12150118={id:12150118,blog_id:2,rank:1,zone:5,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12150118,"mpid":1,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/22/chinese-space-station-crash-on-earth-2017_n_12150118.html?utm_hp_ref=science&ir=Science" >Chinese Space Station Expected To Plummet To Earth In 2017</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/22/chinese-space-station-crash-on-earth-2017_n_12150118.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12150118" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57e4a9741800002d009a47f9.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">STR via Getty Images</span>   </div>
+</div>
+<div id="entry_12147116" onmouseover="TrackingData.entry_12147116={id:12147116,blog_id:2,rank:2,zone:5,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12147116,"mpid":2,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/22/nasa-zodiac-change_n_12147116.html?utm_hp_ref=science&ir=Science" >No, NASA Didn't Change Your Zodiac Sign</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/22/nasa-zodiac-change_n_12147116.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12147116" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57e458ec1800002d009a4721.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">Grant Faint via Getty Images</span>   </div>
+</div>
+<div id="entry_12143026" onmouseover="TrackingData.entry_12143026={id:12143026,blog_id:2,rank:3,zone:5,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12143026,"mpid":3,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/22/map-of-cognitive-biases_n_12143026.html?utm_hp_ref=science&ir=Science" >You Can't Always Trust Your Own Thoughts, And This Chart Shows Why</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/22/map-of-cognitive-biases_n_12143026.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12143026" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57e40ba51b00002d00ef1783.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">By John Manoogian III, Buster Benson, and Wikipedia users.</span>   </div>
+</div>
+<div id="entry_12141618" onmouseover="TrackingData.entry_12141618={id:12141618,blog_id:2,rank:4,zone:5,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12141618,"mpid":4,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/21/summer-2016-floods_n_12141618.html?utm_hp_ref=science&ir=Science" >Summer 2016 Was The 'Summer Of Floods'</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/21/summer-2016-floods_n_12141618.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12141618" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57e425eb180000c7063167b9.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">Joe Raedle/Getty Images</span>   </div>
+</div>
+<div id="entry_12120552" onmouseover="TrackingData.entry_12120552={id:12120552,blog_id:2,rank:5,zone:5,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12120552,"mpid":5,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/20/this-simple-graph-reveals-some-very-good-news-about-air-pollution_n_12120552.html?utm_hp_ref=science&ir=Science" >This Simple Graph Reveals Some Very Good News About Air Pollution</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/20/this-simple-graph-reveals-some-very-good-news-about-air-pollution_n_12120552.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12120552" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57e1fe711800002f00315fe9.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">fotog via Getty Images</span>   </div>
+</div>
+<div id="entry_12114498" onmouseover="TrackingData.entry_12114498={id:12114498,blog_id:2,rank:6,zone:5,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12114498,"mpid":6,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/21/pluto-frozen-heart-beating_n_12114498.html?utm_hp_ref=science&ir=Science" >We Now Know How Pluto Got Its Giant Frozen Heart</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/21/pluto-frozen-heart-beating_n_12114498.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12114498" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57e224541b00002d00ef10b0.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">NASA NASA / Reuters</span>   </div>
+</div>
+<div id="entry_12109478" onmouseover="TrackingData.entry_12109478={id:12109478,blog_id:2,rank:7,zone:5,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12109478,"mpid":7,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/20/sec-investigates-exxon_n_12109478.html?utm_hp_ref=science&ir=Science" >Feds Investigating Exxon On Climate Change</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/20/sec-investigates-exxon_n_12109478.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12109478" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57e18c55180000113cbd2baa.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">Lucas Jackson/Reuters</span>   </div>
+</div>
+<div id="entry_12104874" onmouseover="TrackingData.entry_12104874={id:12104874,blog_id:2,rank:8,zone:5,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12104874,"mpid":8,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/20/pigeons-learn-recognize-words_n_12104874.html?utm_hp_ref=science&ir=Science" >If You Can Read This, You May Be A Pigeon</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/20/pigeons-learn-recognize-words_n_12104874.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12104874" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57e173f71800006c32bd2afd.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">David Azia/ASSOCIATED PRESS</span>   </div>
+</div>
+<div id="entry_12090906" onmouseover="TrackingData.entry_12090906={id:12090906,blog_id:2,rank:9,zone:5,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12090906,"mpid":9,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/19/human-skeleton-dating-back-2000-years-found-on-famed-shipwreck_n_12090906.html?utm_hp_ref=science&ir=Science" >2000-Year-Old Human Skeleton Found On Famed Shipwreck</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/19/human-skeleton-dating-back-2000-years-found-on-famed-shipwreck_n_12090906.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12090906" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57e041fe1300002b0039d0a7.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">Brett Seymour EUAWHOIARGO</span>   </div>
+</div>
+<div id="entry_12086850" onmouseover="TrackingData.entry_12086850={id:12086850,blog_id:2,rank:10,zone:5,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12086850,"mpid":10,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/18/moniz-climate-week_n_12086850.html?utm_hp_ref=science&ir=Science" >Energy Secretary Urges Congress To Pass Sweeping Climate Policy</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/18/moniz-climate-week_n_12086850.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12086850" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57e006e4180000113cbd25ea.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">JIM WATSON via Getty Images</span>   </div>
+</div>
+<div id="entry_12085782" onmouseover="TrackingData.entry_12085782={id:12085782,blog_id:2,rank:11,zone:5,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12085782,"mpid":11,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/19/nasa-booster-nozzle_n_12085782.html?utm_hp_ref=science&ir=Science" >Watch A NASA Booster Nozzle Plug Get Blown To Bits</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/19/nasa-booster-nozzle_n_12085782.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12085782" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57dff6781300002b0039cec5.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">NASA</span>   </div>
+</div>
+<div id="entry_12081202" onmouseover="TrackingData.entry_12081202={id:12081202,blog_id:2,rank:12,zone:5,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12081202,"mpid":12,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/19/black-hole-burp_n_12081202.html?utm_hp_ref=science&ir=Science" >NASA Spacecraft Captures Black Holes Eating Stars & Belching Fire</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/19/black-hole-burp_n_12081202.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12081202" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57df925a1800002f003156dd.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">NASAJPLCaltech</span>   </div>
+</div>
+<div id="entry_12059422" onmouseover="TrackingData.entry_12059422={id:12059422,blog_id:2,rank:13,zone:5,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12059422,"mpid":13,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/16/synesthesia-senses-brain_n_12059422.html?utm_hp_ref=science&ir=Science" >Does This Headline Look Blue To You? Then It Might Also Feel Like A Triangle.</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/16/synesthesia-senses-brain_n_12059422.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12059422" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57dc3780130000930639c829.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">alphaspirit via Getty Images</span>   </div>
+</div>
+			<div id='recent-blogs-overflow-container-left' data-beacon='{"p":{"mnid":"overflow_entry"}}'></div>
+			
+		</div>
+		<script type="text/javascript">huff.emit('content/update', '#center_column');</script>
+		
+		<div class="clear"></div>
+	</div><!-- /center_column -->
+	
+</div>
+
+<!-- LONG RIGHT COLUMN -->
+<div id="right_column" class="grid grid_v_fp_right_bl" data-beacon='{"p":{"mlid":"col3"}}'>
+
+
+		<!-- Top ad -->
+
+                <script type='text/javascript'>
+                    try { if ('function' === typeof(adSetSyncDelay)) { adSetSyncDelay('125');}  } catch (e) {}
+                </script>
+            <div id="ad_right_rail_flex" class="ad_wrapper_top">                    
+                    <script type="text/javascript">
+                        if(HPAds.ad_check_page_config('right_rail_flex')) {
+                            var adId = '93319573';
+                            htmlAdWH(adId, "RR", "RR","f");
+                            var debugadcode = '';
+                            document.write(debugadcode);
+                        }
+                    </script>
+                    </div><!-- ESI MostPopular EndTime:1474689053 -->
+<div class="mod mod-follow tabs" data-beacon='{"p":{"mnid":"mod-follow"}}'>
+  <div class="mod-head">
+    <h3>FOLLOW HUFFPOST</h3>
+  </div>
+  <div class="mod-body">
+    <ul class="platform tabs-control">
+      <li class="email sprite" data-beacon='{"p":{"lnid":"email"}}'>
+        <a href="#">Email</a>
+      </li>
+      <li class="fb sprite" data-beacon='{"p":{"lnid":"fb"}}'>
+        <a href="#">Facebook</a>
+      </li>
+      <li class="twitter sprite" data-beacon='{"p":{"lnid":"twitter"}}'>
+        <a href="#">Twitter</a>
+      </li>
+     
+        
+      <li class="gplus sprite" data-beacon='{"p":{"lnid":"gplus"}}'>
+        <a href="#">Google Plus</a>
+      </li> 
+            <li class="rss sprite" data-beacon='{"p":{"lnid":"rss"}}'>
+        <a href="#">RSS</a>
+      </li>
+      <li class="mobile sprite" data-beacon='{"p":{"lnid":"mobile"}}'>
+        <a href="#">Mobile</a>
+      </li>
+    </ul>
+    <ul class="platform-content tabs-content">
+      <li class="email">
+        <form class="subscribe">
+          <input class="text" name="email" onFocus="if(this.value=='Enter your email')this.value=''" value="Enter your email" type="text" />
+          <input type="checkbox" value="1" name="email_subscribe_check" class="email_subscribe_check" style="display:none;" />
+          <input type="hidden" name="vertical" value="science" />
+          <input class="button" type="submit" value="Sign me up!" />
+          <label class="signup_error" style="display:none;">Please check the checkbox to indicate your consent</label>
+          <div class="options">
+			            <label>
+                            	<input type="checkbox" class="list" name="daily-brief" checked="checked" />
+              	The Morning Email                          </label>
+
+                                    <label>
+              <input type="checkbox" class="list" name="vertical-brief" checked="checked" />
+                            	Innovation Brief              
+                          </label>
+                                                 
+          </div>
+           
+                        <p class="instructions">
+                            Get top stories and blog posts emailed to me each day. Newsletters may offer personalized content or advertisements. <a href="http://privacy.aol.com/" target="_blank">Learn more.</a>
+                        </p>    
+                      
+		        </form>
+      </li>
+      <!-- /.email -->
+            <li class="fb">
+        <ol class="options">
+                   <li>
+            <span class="name">HuffPost</span>
+            <div class="share-button">
+                <div class="fb-like" data-href="http://www.facebook.com/HuffingtonPost" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-colorscheme="light" data-font="arial" data-action="like" ref="" style="width: 100px" hp_track=""></div>            </div>
+          </li>
+           	          <li>
+	            <span class="name">Science</span>
+	            <div class="share-button">
+	                <div class="fb-like" data-href="http://www.facebook.com/HuffPostScienceTech" data-send="false" data-layout="button_count" data-width="95" data-show-faces="false" data-colorscheme="light" data-font="trebuchet ms" data-action="like" ref="" style="width: 95px" hp_track="Vertical Page"></div><script type="text/javascript">
+jQuery('#fb_like_vertical').mouseenter(function() {
+	var html = "<div id=\"fb-tooltip\" class=\"fb-tooltip-main\"><div class=\"fb-tooltip-wrapper\"><span>Follow us on Facebook</span><br/>Get updates from HuffPost Science posted directly to your News Feed.<div class=\"corner\"><div class=\"first\"></div><div class=\"second\"></div></div></div></div>";
+	var coords = [-5, -78];
+	if( HPConfig.current_vertical_name == 'homepage' ) {
+		coords = [-5, -70];
+	}
+	else if( HPConfig.current_vertical_name == 'mapquest' ) {
+		coords = [-5, -68];
+	}
+	FloatingPrompt.embed(this, html, undefined, 'top', {fp_intersects:1, timeout_remove:2000,ignore_arrow: true, width:236, add_xy:coords, class_name: 'clear-overlay'});	
+});
+</script>
+	            </div>
+	          </li>
+	                            </ol>
+      </li>
+      <!-- /.fb -->
+      <li class="twitter">
+        <ol class="options">
+                  <li>
+            <span class="name">HuffPost</span>
+            <div class="share-button">
+                
+
+<a href="https://twitter.com/HuffingtonPost" class="twitter-follow-button" data-show-screen-name="true" data-show-count="false" data-lang="en" data-width="100px">Follow</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+            </div>
+          </li>
+             	          <li>
+	            <span class="name">Science</span>
+	            <div class="share-button">
+	                
+<span data-placement="Header/Science">
+
+<a href="https://twitter.com/HuffPostScience" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false" data-lang="en" data-width="70px">Follow</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+</span>
+	            </div>
+	          </li>
+	                                      </ol>
+      </li>
+      <!-- /.twitter -->
+      <li class="gplus">
+        <ol class="options">
+                  <li>
+            <span class="name">HuffPost</span>
+            <div class="share-button">
+                
+<div class="g-plusone" data-annotation="bubble" data-size="medium" data-width="32" data-href="http://www.huffingtonpost.com/"></div>
+            </div>
+          </li>
+         	          <li>
+	            <span class="name">Science</span>
+	            <div class="share-button">
+	                
+<div class="g-plusone" data-annotation="bubble" data-size="medium" data-width="32" data-href="http://www.huffingtonpost.com/science"></div>
+	            </div>
+              </li>
+	                                      </ol>
+      </li>
+      <!-- /.gplus -->
+      <li class="rss">
+        <ol class="options">
+        	             <li>
+             <a href="/feeds/index.xml" class="name sprite">HuffPost</a>
+              </li>
+                     	          <li>
+            
+                        <a href="/feeds/verticals/science/index.xml" class="name sprite">Science</a>
+                      </li>
+		  		            <li>
+            <a class="more" href="/syndication/">View all RSS feeds</a>
+          </li>
+        </ol>
+      </li>
+      <!-- /.rss -->
+      <li class="mobile">
+        <ol class="options">
+          <li>
+          	          	          	<a class="ios sprite" href="http://itunes.apple.com/us/app/the-huffington-post/id306621789?mt=8"></a>
+          </li>
+          <li>
+                        <a class="android sprite" href="https://play.google.com/store/apps/details?id=com.huffingtonpost.android&hl=en_US"></a>
+          </li>
+          <li>
+            <a class="blackberry sprite" href="https://appworld.blackberry.com/webstore/content/19143/"></a>
+          </li>
+        </ol>
+      </li>
+      <!-- /.mobile -->
+    </ul>
+  </div>
+  <div class="mod-footer"></div>
+</div>
+<!-- /.mod-follow -->
+
+<div class="clear margin_top_10"></div>
+	        	            <div id="gravity_most_popular_widget"></div>
+	            <script type="text/javascript">window.HPUtil && window.HPUtil.gravityMostPopularWidget();</script>
+	        	        				
+				<!-- Content -->
+
+               
+    <esi:choose>
+        <esi:when test="$exists($(HTTP_COOKIE{'huffpost_s'}))">
+            <div class="fb_module"><div class="fb-like-box" data-href="http://www.facebook.com/HuffPostScienceTech" data-width="300" data-height="274" data-show-faces="true" data-stream="false" data-header="false"></div><div style="font-size:8px; padding-left:10px"></div></div>
+        </esi:when>
+    </esi:choose>
+        
+
+
+
+<div class="clear"></div>
+<!-- /Content -->
+        
+				<!-- Right entries -->
+        <div id="right_column_entries">
+        <div id="rc_upper">
+<!-- BEGIN rc_upper CONTENT -->
+
+
+
+
+
+
+
+
+<!-- END rc_lower CONTENT -->
+</div>
+<div id="entry_12051576" onmouseover="TrackingData.entry_12051576={id:12051576,blog_id:2,rank:0,zone:6,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12051576,"mpid":0,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/16/best-astronomy-photos-2016_n_12051576.html?utm_hp_ref=science&ir=Science" >The Best Astronomy Photos Of 2016 Are Simply Stellar</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/16/best-astronomy-photos-2016_n_12051576.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12051576" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57dc1677180000c7063150da.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">Insight Astronomy Photographer of the Year 2016</span>   </div>
+</div>
+<div id="entry_12044366" onmouseover="TrackingData.entry_12044366={id:12044366,blog_id:2,rank:1,zone:6,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12044366,"mpid":1,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/16/seafood-traceability-technology_n_12044366.html?utm_hp_ref=science&ir=Science" >Thanks To Technology, You Might Soon Know Where Your Seafood Actually Comes From</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/16/seafood-traceability-technology_n_12044366.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12044366" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57dbce781800006c32bd1d33.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">Elena_Danileiko via Getty Images</span>   </div>
+</div>
+<div id="entry_12034560" onmouseover="TrackingData.entry_12034560={id:12034560,blog_id:2,rank:2,zone:6,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12034560,"mpid":2,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/15/envious-personality-types_n_12034560.html?utm_hp_ref=science&ir=Science" >'Envious' May Just Be The Most Common Personality Type</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/15/envious-personality-types_n_12034560.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12034560" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57db06c0130000930639c4b3.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">Westend61/Getty Images</span>   </div>
+</div>
+<div id="entry_12032862" onmouseover="TrackingData.entry_12032862={id:12032862,blog_id:2,rank:3,zone:6,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12032862,"mpid":3,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/14/hazardous-ewaste-recycling_n_12032862.html?utm_hp_ref=science&ir=Science" >Even When Recycled, Old Computer Parts End Up Where They Shouldn’t</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/14/hazardous-ewaste-recycling_n_12032862.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12032862" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57d9b27a180000e000314931.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">BAN</span>   </div>
+</div>
+<div id="entry_12032650" onmouseover="TrackingData.entry_12032650={id:12032650,blog_id:2,rank:4,zone:6,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12032650,"mpid":4,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/15/polar-bears-shrinking-sea-ice_n_12032650.html?utm_hp_ref=science&ir=Science" >Polar Bears Are Facing Shorter Ice Seasons, And That's Terrible News</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/15/polar-bears-shrinking-sea-ice_n_12032650.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12032650" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57dafbdd1800006c32bd1b4f.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">Arturo de Frias photography via Getty Images</span>   </div>
+</div>
+<div id="entry_12012722" onmouseover="TrackingData.entry_12012722={id:12012722,blog_id:2,rank:5,zone:6,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12012722,"mpid":5,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/14/super-agers-brain-memory_n_12012722.html?utm_hp_ref=science&ir=Science" >Researchers Would Love To Know Why Some Older People Have Such Excellent Memories</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/14/super-agers-brain-memory_n_12012722.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12012722" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57d973f81300002b0039bf45.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">K-P Wolf via Getty Images</span>   </div>
+</div>
+<div id="entry_12007112" onmouseover="TrackingData.entry_12007112={id:12007112,blog_id:2,rank:6,zone:6,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12007112,"mpid":6,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/14/bayer-monsanto-merger_n_12007112.html?utm_hp_ref=science&ir=Science" >Monsanto Is Selling Itself For $66 Billion In Pesticide Megamerger</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/14/bayer-monsanto-merger_n_12007112.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12007112" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57d940ac1800002f00314736.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">Bloomberg via Getty Images</span>   </div>
+</div>
+<div id="entry_12004650" onmouseover="TrackingData.entry_12004650={id:12004650,blog_id:2,rank:7,zone:6,vertical:72,ab_headline:'a'};" class="entry" data-beacon='{"p":{"mnid":"newsa","plid":12004650,"mpid":7,"lnid":"autopilot"}}'>
+    <h4>
+        <a href="http://www.huffingtonpost.com/2016/09/13/orca-captivity-ban-california-seaworld_n_12004650.html?utm_hp_ref=science&ir=Science" >California Bans Orca Captivity And Breeding</a>
+    </h4>
+    <div class="image_wrapper ">
+        <a href="http://www.huffingtonpost.com/2016/09/13/orca-captivity-ban-california-seaworld_n_12004650.html?utm_hp_ref=science&ir=Science" >
+            <img class="quickread_link" id="image_12004650" alt="" width="300" height="219" src="http://img.huffingtonpost.com/asset/300_219/57d8c86e1800001034bd142b.jpg">
+        </a>
+        <span class="absolute image-credit arial_11">Mathieu Belanger/Reuters</span>   </div>
+</div>
+        	<div id='recent-blogs-overflow-container-right' data-beacon='{"p":{"mnid":"overflow_entry"}}'></div>
+        	
+        </div> <!-- right_column_entries -->
+
+		
+		
+		<div id="ad_right_rail_300x250_lower" class="ad_wrapper_">                    
+                    <script type="text/javascript">
+                        if(HPAds.ad_check_page_config('right_rail_300x250_lower')) {
+                            var adId = '93434304';
+                            adSetInView('D'); htmlAdWH(adId, "RR", "RR","f"); adSetInView('0');
+                            var debugadcode = '';
+                            document.write(debugadcode);
+                        }
+                    </script>
+                    </div>		
+</div><!-- /right_column -->
+<script type="text/javascript">huff.emit('content/update', '#right_column');</script>
+
+<div class="clear full"></div>
+
+<div class="center"></div>
+
+
+<!-- Frontpage Big News  -->
+
+        <a name="blog-links"></a>
+        <div id="blogroll_wrapper" class="float_left margin_top_5 border_for_widget science_vertical_background science_modal_inner">
+            <div id="blogroll_header" class="round_header">
+                <div class="blogroll_tab">
+                    <ul>
+                        <li class="first">
+                            <a href="#blog_links" rel="homepage" class="first uppercase blogroll_tab_link">links:</a>
+                        </li>
+                                                <li>
+                            <a href="#blog_links" id="blogroll_tab_politics" rel="politics" class="blogroll_tab_link vertical_tab_link">
+                                POLITICS                            </a>
+                        </li>
+                                                <li>
+                            <a href="#blog_links" id="blogroll_tab_media" rel="media" class="blogroll_tab_link vertical_tab_link">
+                                MEDIA                            </a>
+                        </li>
+                                                <li>
+                            <a href="#blog_links" id="blogroll_tab_business" rel="business" class="blogroll_tab_link vertical_tab_link">
+                                BUSINESS                            </a>
+                        </li>
+                                                <li>
+                            <a href="#blog_links" id="blogroll_tab_entertainment" rel="entertainment" class="blogroll_tab_link vertical_tab_link">
+                                ENTERTAINMENT                            </a>
+                        </li>
+                                                <li>
+                            <a href="#blog_links" id="blogroll_tab_living" rel="living" class="blogroll_tab_link vertical_tab_link">
+                                LIVING                            </a>
+                        </li>
+                                                <li>
+                            <a href="#blog_links" id="blogroll_tab_style" rel="style" class="blogroll_tab_link vertical_tab_link">
+                                STYLE                            </a>
+                        </li>
+                                                <li>
+                            <a href="#blog_links" id="blogroll_tab_green" rel="green" class="blogroll_tab_link vertical_tab_link">
+                                GREEN                            </a>
+                        </li>
+                                                <li>
+                            <a href="#blog_links" id="blogroll_tab_chicago" rel="chicago" class="blogroll_tab_link vertical_tab_link">
+                                CHICAGO                            </a>
+                        </li>
+                                                <li>
+                            <a href="#blog_links" id="blogroll_tab_ny" rel="ny" class="blogroll_tab_link vertical_tab_link">
+                                NY                            </a>
+                        </li>
+                                                <li>
+                            <a href="#blog_links" id="blogroll_tab_books" rel="books" class="blogroll_tab_link vertical_tab_link">
+                                BOOKS                            </a>
+                        </li>
+                                                <li>
+                            <a href="#blog_links" id="blogroll_tab_impact" rel="impact" class="blogroll_tab_link vertical_tab_link">
+                                IMPACT                            </a>
+                        </li>
+                                            </ul>
+                </div> <!-- .blogroll_tab -->
+            </div><!-- .blogroll_header -->
+            <div id="blogroll" class="float_left white_bg">
+                <div id="blogroll_inner">
+                    <div class='link_list_wrapper'><span class='bold georgia_14'>News</span><ul class='link_list'><li><a href="http://www.nih.gov/news/" target="_hplink">National Institute of Health News</a></li>
+<li><a href="http://www.nature.com/nature/current_issue.html" target="_hplink">Nature: Current Issue</a></li>
+<li><a href="http://jama.ama-assn.org/" target="_hplink">JAMA: Current Issue</a></li>
+</ul></div><div class='link_list_wrapper'><ul class='link_list'><li><a href="http://seedmagazine.com/" target="_hplink">Seed Magazine</a></li>
+<li><a href="http://slashdot.org/" target="_hplink">Slashdot</a></li>
+<li><a href="http://www.rsc.org/chemistryworld/" target="_hplink">Chemistry World</a></li>
+<li><a href="http://www.wired.com/wiredscience/" target="_hplink">Wired Science</a></li>
+</ul></div><div class='link_list_wrapper'><ul class='link_list'><li><a href="http://www.wired.com/wiredscience/" target="_hplink">Popular Science</a></li>
+<li><a href="http://www.newscientist.com/" target="_hplink">New Scientist</a></li>
+<li><a href="http://www.scientificamerican.com/" target="_hplink">Scientific American</a></li>
+<li><a href="http://discovermagazine.com/" target="_hplink">Discover Magazine</a></li>
+</ul></div><div class='link_list_wrapper'><ul class='link_list'><li><a href="http://www.guardian.co.uk/science" target="_hplink">Guardian Science</a></li>
+<li><a href="http://www.nytimes.com/pages/science/index.html" target="_hplink">New York Times Science</a></li>
+</ul><span class='bold georgia_14'>Blogs</span><ul class='link_list'><li><a href="http://blogs.scientificamerican.com/" target="_hplink">Scientific American Blogs</a></li>
+</ul></div><div class='link_list_wrapper'><ul class='link_list'><li><a href="http://scienceblogs.com/" target="_hplink">ScienceBlogs</a></li>
+<li><a href="http://blogs.discovermagazine.com" target="_hplink">Discover Magazine Blogs</a></li>
+<li><a href="http://www.newscientist.com/section/blogs" target="_hplink">New Scientist Blogs</a></li>
+</ul></div><div class='link_list_wrapper'><ul class='link_list'><li><a href="http://freethoughtblogs.com/pharyngula" target="_hplink">Pharyngula</a></li>
+<li><a href="http://www.wired.com/wiredscience/science-blogs/" target="_hplink">Wired Science Blogs</a></li>
+<li><a href="http://physics.ucsd.edu/do-the-math/" target="_hplink">Do The Math</a></li>
+</ul></div>                </div>
+            </div>
+
+        </div>
+        <div class="clear"></div>
+<!-- /Blogroll -->
+ 
+ 
+<!-- --------------------FEATUREBAR----------------------------- -->
+
+
+<div id="footer">
+
+	<!-- HP topnav -->
+	<div class="top_nav_menu margin_bottom_5">
+			</div>
+	
+	<div>		
+            <!--
+    <esi:choose>
+        <esi:when test="$(HTTP_HOST) has 'quebec.' || $(QUERY_STRING{'ir'}) has 'Quebec'">
+-->
+<!--esi
+        <ul id="footer_nav_1" class="footer_nav">
+    <li><a href="/syndication">RSS</a> | </li>
+    <li><a href="http://www.huffingtonpost.com/jobs/">Careers</a> | </li>
+    <li><a href=" http://quebec.huffingtonpost.ca/p/faq-fr-ca.html">FAQ</a></li>
+</ul>
+<ul id="footer_nav_2" class="footer_nav">
+    <li><a href="http://quebec.huffingtonpost.ca/p/modalites-quebec.html">User Agreement</a> | </li>
+    <li><a href="http://quebec.huffingtonpost.ca/p/confidentialite-ca-fr.html">Privacy</a> | </li>
+    <li><a href=" http://quebec.huffingtonpost.ca/p/politique-commentaires-cafr.html">Comment Policy</a> | </li>
+    <li><a href="http://quebec.huffingtonpost.ca/p/a-notre-sujet-ca.html">About Us</a> | </li>
+    <li><a href="http://quebec.huffingtonpost.ca/p/tierces-partie-cafr.html" target="_blank">About Our Ads</a> | </li>
+    <li><a href="http://quebec.huffingtonpost.ca/p/nous-joindre-ca.html">Contact Us</a> | </li>
+    <li><a href="/archive">Archive</a></li>
+</ul>
+<ul id="footer_nav_3" class="footer_nav">
+    <li> &copy; 2016 TheHuffingtonPost.com Inc.| Le "Huffington Post" est une marque enregistr&eacute;e de TheHuffingtonPost.com Inc. Tous droits r&eacute;serv&eacute;s.</li>
+</ul>
+-->
+<!--
+        </esi:when>
+        <esi:when test="$(GEO{'country_code'}) == 'CA' || $(HTTP_HOST) has '.ca' || $(QUERY_STRING{'country'}) has 'CA' || $(QUERY_STRING{'ir'}) has 'Canada'">
+-->
+<!--esi
+        <ul id="footer_nav_1" class="footer_nav">
+		<li><a href="http://advertising.aol.com/brands/huffington-post" target="_blank">Advertise</a> | </li>
+    <li><a href="/makehome/">Make HuffPost your Home Page</a> | </li>
+    <li><a href="/syndication/">RSS</a> | </li>
+    <li><a href="http://www.huffingtonpost.com/jobs/">Careers</a> | </li>
+    <li><a href="http://www.huffingtonpost.com/faq/">FAQ</a></li>
+</ul>
+<ul id="footer_nav_2" class="footer_nav">
+    <li><a href="http://www.huffingtonpost.com/p/huffingtonpostca-terms-and-con.html">User Agreement</a> | </li>
+    <li><a href="http://www.huffingtonpost.com/p/huffingtonpostca-privacy-policy.html">Privacy</a> | </li>
+    <li><a href="http://www.huffingtonpost.com/p/community-guidelines-ca.html">Comment Policy</a> | </li>
+    <li><a href="http://www.huffingtonpost.com/p/huffingtonpostca-about-us.html">About Us</a> | </li>
+    <li><a href="http://adinfo.aol.com/about-our-ads/" target="_blank">About Our Ads</a> | </li>
+    <li><a href="/contact/">Contact Us</a> | </li>
+    <li><a href="/archive">Archive</a></li>
+</ul>
+<ul id="footer_nav_3" class="footer_nav">
+    <li>Copyright &copy; 2016 TheHuffingtonPost.com, Inc. | </li>
+    <li>&quot;The Huffington Post&quot; is a registered trademark of TheHuffingtonPost.com, Inc. All rights reserved.</li>
+</ul>
+-->
+<!--
+        </esi:when>
+        <esi:when test="$(GEO{'country_code'}) == 'UK' || $(HTTP_HOST) has '.co.uk' || $(QUERY_STRING{'country'}) has 'UK' || $(QUERY_STRING{'ir'}) has 'UK'">
+-->
+<!--esi
+        <ul id="footer_nav_0" class="footer_nav">
+    <li><a href="https://itunes.apple.com/ie/app/the-huffington-post/id306621789?mt=8">Mobile App for iPhone / iPad</a> | </li>
+    <li><a href="https://play.google.com/store/apps/details?id=com.huffingtonpost.android&hl=en">Mobile App for Android</a></li>
+</ul>
+<ul id="footer_nav_1" class="footer_nav">
+    <li><a href="http://advertising.aol.co.uk/brands" target="_blank">Advertise</a> | </li>
+    <li><a href="/makehome/">Make HuffPost your Home Page</a> | </li>
+    <li><a href="/syndication/">RSS</a> | </li>
+    <li><a href="http://www.huffingtonpost.co.uk/p/huffingtonpostcouk-careers.html">Careers</a> | </li>
+    <li><a href="http://www.huffingtonpost.co.uk/p/huffingtonpostcouk-faq.html">FAQ</a></li>
+</ul>
+<ul id="footer_nav_2" class="footer_nav">
+    <li><a href="http://www.huffingtonpost.co.uk/p/huffingtonpostcouk-terms-of-service.html">User Agreement</a> | </li>
+    <li><a href="http://privacy.aol.co.uk/">Privacy</a> | </li>
+    <li><a href="http://privacy.aol.co.uk/cookie-information/">Cookie Policy</a> | </li>
+    <li><a href="http://www.huffingtonpost.co.uk/p/huffingtonpostcouk-comment-policy.html">Comment Policy</a> | </li>
+    <li><a href="http://www.huffingtonpost.co.uk/p/huffingtonpostcouk-about-us.html">About Us</a> | </li>
+    <li><a href="http://adinfo.aol.com/about-our-ads/" target="_blank">About Our Ads</a> | </li>
+    <li><a href="http://www.huffingtonpost.co.uk/p/huffpost-uk-contact-us.html">Contact Us</a> | </li>
+    <li><a href="/archive">Archive</a></li>
+</ul>
+<ul id="footer_nav_3" class="footer_nav">
+    <li>&quot;The Huffington Post UK&quot; is provided by AOL (UK) Limited.  &copy; 2016 AOL (UK) Limited its affiliates and licensors</li>
+</ul>-->
+<!--
+        </esi:when>
+        <esi:when test="$(HTTP_HOST) has '.fr'">
+-->
+<!--esi
+        <ul id="footer_nav_1" class="footer_nav">
+    <li><a href="http://www.mpublicite.fr/">Advertise</a> | </li>
+    <li><a href="/syndication">RSS</a> | </li>
+    <li><a href="http://www.huffingtonpost.fr/p/mentions-legales.html">Legal notice</a> | </li>
+    <li><a href="http://www.huffingtonpost.fr/p/huffpost-france-faq.html">FAQ</a> | </li>
+    <li><a href="http://www.huffingtonpost.fr/p/cookies-et-autres-technologies.html">Cookies</a></li>
+</ul>
+<ul id="footer_nav_2" class="footer_nav">
+    <li><a href="http://www.huffingtonpost.fr/p/conditions-generales.html">User Agreement</a> | </li>
+    <li><a href="http://www.huffingtonpost.fr/p/charte-de-confidentialite.html">Privacy</a> | </li>
+    <li><a href="http://www.huffingtonpost.fr/p/charte-des-commentaires.html">Comment Policy</a> | </li>
+    <li><a href="http://www.huffingtonpost.fr/p/a-propos-de-nous.html">About Us</a> | </li>
+    <li><a href="http://www.mpublicite.fr/pdf/HuffingtonPost_MPublicite.pdf" target="_blank">About Our Ads</a> | </li>
+    <li><a href="http://www.huffingtonpost.fr/p/nous-contacter.html">Contact Us</a> | </li>
+    <li><a href="/archive">Archive</a></li>
+</ul>
+<ul id="footer_nav_3" class="footer_nav">
+    <li>&copy; 2016 Le Huffington Post SAS. Tous droits r&eacute;serv&eacute;s.</li>
+</ul>
+-->
+<!--
+        </esi:when>
+        <esi:when test="$(HTTP_HOST) has 'voces.'">
+-->
+<!--esi
+        <ul id="footer_nav_1" class="footer_nav">
+    <li><a href="http://voces.huffingtonpost.com/p/voces-cookies-y-otras-tecnologi.html">Política de cookies</a> | </li>
+    <li><a href="http://voces.huffingtonpost.com/syndication/">RSS</a> | </li>
+    <li><a href="http://www.huffingtonpost.com/jobs/">Careers</a> | </li>
+    <li><a href="http://voces.huffingtonpost.com/p/faq-es-us.html">FAQ</a></li>
+</ul>
+<ul id="footer_nav_2" class="footer_nav">
+    <li><a href="http://voces.huffingtonpost.com/p/acuerdo-del-usuario.html">User Agreement</a> | </li>
+    <li><a href="http://privacy.aol.com/">Pol&iacute;tica de Privacidad</a> | </li>
+    <li><a href="http://www.huffingtonpost.com/faq/#moderation">Comment Policy</a> | </li>
+    <li><a href="http://voces.huffingtonpost.com/p/quiene-somos-es-us.html">About Us</a> | </li>
+    <li><a href="http://voces.huffingtonpost.com/p/acerca-de-nuestros-anuncios.html">About Our Ads</a> | </li>
+    <li><a href="http://voces.huffingtonpost.com/p/contacto-es-us.html">Contact Us</a> | </li>
+    <li><a href="/archive">Archive</a></li>
+</ul>
+<ul id="footer_nav_3" class="footer_nav">
+    <li>Copyright &copy; 2016 TheHuffingtonPost.com, Inc. | </li>
+    <li>&quot;The Huffington Post&quot; is a registered trademark of TheHuffingtonPost.com, Inc. All rights reserved.</li>
+</ul>
+-->
+<!--
+        </esi:when>
+        <esi:when test="$(HTTP_HOST) has '.es'">
+-->
+<!--esi
+        <ul id="footer_nav_1" class="footer_nav">
+    <li><a href="http://www.huffingtonpost.es/p/cookies-y-otras-tecnologias.html">Política de cookies</a> | </li>
+    <li><a href="/syndication">RSS</a> | </li>
+    <li><a href="http://www.huffingtonpost.es/p/preguntas-frecuentes.html">FAQ</a></li>
+</ul>
+<ul id="footer_nav_2" class="footer_nav">
+    <li><a href="http://www.huffingtonpost.es/p/terminos-y-condiciones-de-uso.html">User Agreement</a> | </li>
+    <li><a href="/privacy/">Privacy</a> | </li>
+    <li><a href="http://www.huffingtonpost.es/p/politica-en-cuanto-a-comentari.html">Comment Policy</a> | </li>
+    <li><a href="http://www.huffingtonpost.es/p/quienes-somos.html">About Us</a> | </li>
+    <li><a href="http://www.huffingtonpost.es/p/contacto.html">Contact Us</a> | </li>
+    <li><a href="/archive">Archive</a></li>
+</ul>
+<ul id="footer_nav_3" class="footer_nav">
+    <li>Copyright &copy; 2016 Espa&ntilde;a Prisa Noticias S.L.U. o sus licenciadores (en particular HUFFINGTON POST INTERNATIONAL)</li>
+</ul>
+-->
+<!--
+        </esi:when>
+        <esi:when test="$(HTTP_HOST) has '.it'">
+-->
+<!--esi
+        <ul id="footer_nav_1" class="footer_nav">
+    <li><a href="/syndication">RSS</a> | </li>
+    <li><a href="http://www.huffingtonpost.it/p/domande-frequenti.html">FAQ</a> | </li>
+    <li><a href="http://www.huffingtonpost.it/p/cookie-ed-altre-tecnologie.html">Cookie</a></li>
+</ul>
+<ul id="footer_nav_2" class="footer_nav">
+    <li><a href="http://www.huffingtonpost.it/p/termini-e-condizioni.html">User Agreement</a> | </li>
+    <li><a href="http://www.huffingtonpost.it/p/informativa-sulla-privacy.html">Privacy</a> | </li>
+    <li><a href="http://www.huffingtonpost.it/p/moderazione-dei-commenti.html">Comment Policy</a> | </li>
+    <li><a href="http://www.huffingtonpost.it/p/chi-siamo.html">About Us</a> | </li>
+    <li><a href="http://www.huffingtonpost.it/p/contattaci.html">Contact Us</a> | </li>
+    <li><a href="/archive">Archive</a></li>
+</ul>
+<ul id="footer_nav_3" class="footer_nav">
+    <li>Copyright &copy; 2016 , HuffingtonPost Italia s.r.l., o i Suoi licenzianti (in particolare THEHUFFINGTONPOST Holdings LLC) IVA n. 07942470969</li>
+</ul>
+-->
+<!--
+        </esi:when>
+        <esi:when test="$(HTTP_HOST) has '.jp'">
+-->
+<!--esi
+        <ul id="footer_nav_1" class="footer_nav">
+    <li><a href="/syndication">RSS</a> | </li>
+    <li><a href=" http://www.huffingtonpost.jp/p/huffingtonpostjp-faq.html">FAQ</a></li>
+</ul>
+<ul id="footer_nav_2" class="footer_nav">
+    <li><a href="http://www.huffingtonpost.jp/p/huffingtonpostjp-terms-and-conditions.html">User Agreement</a> | </li>
+    <li><a href="http://www.huffingtonpost.jp/p/huffingtonpostjp-privacy-policy.html">Privacy</a> | </li>
+    <li><a href="http://www.huffingtonpost.jp/p/huffingtonpostjp-comment-policy.html">Comment Policy</a> | </li>
+    <li><a href="http://www.huffingtonpost.jp/p/huffingtonpostjp-about-us.html">About Us</a> | </li>
+    <li><a href="http://www.huffingtonpost.jp/p/huffingtonpostjp-contact-us.html">Contact Us</a> | </li>
+    <li><a href="/archive">Archive</a></li>
+</ul>
+<ul id="footer_nav_3" class="footer_nav">
+    <li>Copyright &copy; 2016 , &quot;The Huffington Post&quot; is a registered trademark of TheHuffingtonPost.com, Inc. All rights reserved.</li>
+</ul>
+-->
+<!--
+        </esi:when>
+        <esi:when test="$(HTTP_HOST) has 'huffpostmaghreb.com'">
+-->
+<!--esi
+        <ul id="footer_nav_1" class="footer_nav">
+    <li><a href="/syndication">RSS</a> | </li>
+    <li><a href="http://www.huffpostmaghreb.com/p/maghreb-faq.html">FAQ</a> | </li>
+    <li><a href="http://www.huffpostmaghreb.com/p/maghreb-terms.html">User Agreement</a></li>
+    </ul>
+<ul id="footer_nav_2" class="footer_nav">
+    <li><a href="http://www.huffpostmaghreb.com/p/maghreb-privacy.html">Privacy</a> | </li>
+    <li><a href="http://www.huffpostmaghreb.com/p/huffpostmaghreb-charte-des-commentaires.html  ">Comment Policy</a> | </li>
+    <li><a href="http://www.huffpostmaghreb.com/p/huffpostmaghreb-a-propos-de-nous.html">About Us</a> | </li>
+    <li><a href="http://www.huffpostmaghreb.com/p/huffpostmaghreb-nous-contacter.html">Contact Us</a> | </li>
+    <li><a href="/archive">Archive</a></li>
+</ul>
+<ul id="footer_nav_3" class="footer_nav">
+    <li>&copy; 2016 TheHuffingtonPost International. Tous droits r&eacute;serv&eacute;s.</li><ul id="footer_nav_1" class="footer_nav">
+</ul>-->
+<!--
+        </esi:when>
+        <esi:when test="$(HTTP_HOST) has 'huffingtonpost.com.au'">
+-->
+<!--esi
+        <ul id="footer_nav_1" class="footer_nav">
+    <li><a href="/makehome/">Make HuffPost your Home Page</a> | </li>
+    <li><a href="/syndication/">RSS</a> | </li>
+    <li><a href="http://www.huffingtonpost.com.au/p/huffpost-australia-faqs.html">FAQ</a></li>
+</ul>
+<ul id="footer_nav_2" class="footer_nav">
+    <li><a href="http://www.huffingtonpost.com.au/p/huffpost-australia-terms.html">User Agreement</a> | </li>
+    <li><a href="http://www.huffingtonpost.com.au/p/huffpost-australia-privacy-policy.html">Privacy</a> | </li>
+    <li><a href="http://www.huffingtonpost.com.au/p/huffpost-australia-about-us.html">About Us</a> | </li>
+    <li><a href="http://www.huffingtonpost.com.au/p/huffpost-australia-contact-us.html">Contact Us</a></li>
+    <li><a href="/archive">Archive</a></li>
+</ul>
+<ul id="footer_nav_3" class="footer_nav">
+    <li>Copyright &copy; 2016 The Huffington Post Australia Pty Ltd. | </li>
+    <li>All rights reserved.</li>
+</ul>
+-->
+<!--
+        </esi:when>
+        <esi:when test="$(HTTP_HOST) has '.de'">
+-->
+<!--esi
+        <ul id="footer_nav_1" class="footer_nav">
+    <li><a href="/syndication">RSS</a> | </li>
+    <li><a href="http://www.huffingtonpost.de/p/huffpostdefaq.html">FAQ</a> | </li>
+    <li><a href="http://www.huffingtonpost.de/p/cookies-und-andere-technologien.html">Cookies</a></li>
+</ul>
+<ul id="footer_nav_2" class="footer_nav">
+    <li><a href="http://www.huffingtonpost.de/p/nutzungsbedingungen.html">User Agreement</a> | </li>
+    <li><a href="http://www.huffingtonpost.de/p/datenschutz.html">Privacy</a> | </li>
+    <li><a href="http://www.huffingtonpost.de/p/kommentaren.html">Comment Policy</a> | </li>
+    <li><a href="http://www.huffingtonpost.de/p/impressum.html">About Us</a> | </li>
+    <li><a href="http://www.huffingtonpost.de/p/kontakt.html">Contact Us</a> | </li>
+    <li><a href="http://www.hubert-burda-media.de/karriere/stellenangebote/?persis_city[]=all&persis_area[]=all&experience[]=all&keywords=Huffington+Post">Careers</a> | </li>
+    <li><a href="/archive">Archive</a></li>
+</ul>
+<ul id="footer_nav_3" class="footer_nav">
+    <li>Copyright &copy;2016 TheHuffingtonPost.com, Inc.</li>
+</ul>
+-->
+<!--
+        </esi:when>
+        <esi:when test="$(HTTP_HOST) has 'brasilpost.com.br'">
+ -->
+ <!--esi
+        <ul id="footer_nav_1" class="footer_nav">		 
+    <li><a href="/syndication">RSS</a> | </li>   
+    <li><a href="http://www.brasilpost.com.br/p/perguntas-frequentes.html">FAQ</a></li>
+</ul>
+<ul id="footer_nav_2" class="footer_nav">
+    <li><a href="http://www.brasilpost.com.br/p/termos-do-servico.html">User Agreement</a> | </li>
+    <li><a href="http://www.brasilpost.com.br/p/politica-de-privacidade.html">Privacy</a></a> | </li>
+    <li><a href="http://www.brasilpost.com.br/p/politica-de-comentarios.html">Comment Policy</a> | </li>
+    <li><a href="http://www.brasilpost.com.br/p/quem-somos.html">About Us</a> | </li>  
+    <li><a href="http://www.brasilpost.com.br/p/contatenos.html">Contact Us</a> | </li>
+    <li><a href="/archive">Archive</a></li>
+</ul>
+<ul id="footer_nav_3" class="footer_nav">
+    <li>Copyright &copy;2016 TheHuffingtonPost.com, Inc.</li>
+</ul>
+ -->
+ <!--
+        </esi:when>
+        <esi:when test="$(HTTP_HOST) has '.kr'">
+ -->
+ <!--esi
+        <ul id="footer_nav_1" class="footer_nav">
+    <li><a href="/syndication">RSS</a> | </li>
+    <li><a href="http://www.huffingtonpost.kr/p/huffpostkoreafaq.html">FAQ</a> | </li>
+    <li><a href="http://www.huffingtonpost.kr/p/huffpostkoreaterms.html">User Agreement</a> | </li>
+    <li><a href="http://www.huffingtonpost.kr/p/huffpostkoreaprivacypolicy.html">Privacy</a> | </li>
+    <li><a href="http://www.huffingtonpost.kr/p/huffpostkoreacommentpolicy.html">Comment Policy</a> | </li>
+    <li><a href="http://www.huffingtonpost.kr/p/huffpostkoreaaboutus.html">About Us</a> | </li>
+    <li><a href="http://www.huffingtonpost.kr/p/huffpostkoreacontactus.html">Contact Us</a> | </li>
+    <li><a href="/archive">Archive</a></li>
+</ul>
+<ul id="footer_nav_2" class="footer_nav">
+    <li>허핑턴포스트코리아(유) | </li>
+    <li>등록번호 : 서울 아 03003 | </li>
+    <li>등록일자 : 2014 년 2 월 10 일 | </li>
+    <li>제호: 허핑턴포스트코리아 </li>
+    <li>발행・편집인: 정영무 </li>
+    <li>주소: 서울 마포구 마포대로 144 </li>
+    <li>발행일자: 2014년 2월 28일 </li>
+    <li>청소년보호책임자: 유강문 </li>
+</ul>
+<ul id="footer_nav_3" class="footer_nav">    
+    <li>Copyright &copy;2016 TheHuffingtonPost.com, Inc.</li>
+</ul>
+ -->
+  <!--
+        </esi:when>
+        <esi:when test="$(HTTP_HOST) has '.gr'">
+ -->
+ <!--esi
+        <ul id="footer_nav_1" class="footer_nav">
+    <li><a href="/syndication">RSS</a> | </li>
+    <li><a href="http://www.huffingtonpost.gr/p/huffpost-gr-faq.html">FAQ</a></li>
+</ul>
+<ul id="footer_nav_2" class="footer_nav">
+    <li><a href="http://www.huffingtonpost.gr/p/huffpost-gr-terms.html">User Agreement</a> | </li>
+    <li><a href="http://www.huffingtonpost.gr/p/huffpost-greece-privacy-policy.html">Privacy</a> | </li>
+    <li><a href="http://www.huffingtonpost.gr/p/huffpost-gr-comment-policy.html">Comment Policy</a> | </li>
+    <li><a href="http://www.huffingtonpost.gr/p/huffpost-gr-about-us.html">About Us</a> | </li>
+    <li><a href="http://www.huffingtonpost.gr/p/huffpost-gr-contact-us.html">Contact Us</a> | </li>
+    <li><a href="/archive">Archive</a></li>
+</ul>
+<ul id="footer_nav_3" class="footer_nav">
+    <li>Copyright &copy;2016 TheHuffingtonPost.com, Inc.</li>
+</ul>
+ -->
+ <!--
+        </esi:when>
+        <esi:when test="$(HTTP_HOST) has '.in'">
+ -->
+ <!--esi
+        <ul id="footer_nav_1" class="footer_nav">
+    <li><a href="/makehome/">Make HuffPost your Home Page</a> | </li>
+    <li><a href="/syndication/">RSS</a> | </li>
+    <li><a href="http://www.huffingtonpost.in/p/huffpost-india-faqs.html">FAQ</a></li>
+</ul>
+<ul id="footer_nav_2" class="footer_nav">
+    <li><a href="http://www.huffingtonpost.in/p/huffpost-india-terms.html">User Agreement</a> | </li>
+    <li><a href="http://www.huffingtonpost.in/p/huffpost-india-privacy-policy.html">Privacy</a> | </li>
+    <li><a href="http://www.huffingtonpost.in/p/huffpost-india-about-us.html">About Us</a> | </li>
+    <li><a href="http://www.huffingtonpost.in/p/huffpost-india-contact-us.html">Contact Us</a> | </li>
+    <li><a href="/archive">Archive</a></li>
+</ul>
+<ul id="footer_nav_3" class="footer_nav">
+    <li>Copyright &copy; 2016 Times Internet Limited (and its licensors). | </li>
+    <li>All rights reserved.</li>
+</ul>
+ -->
+ <!--
+        </esi:when>
+        <esi:when test="$(HTTP_HOST) has 'huffpostarabi.com'">
+ -->
+ <!--esi
+        <ul id="footer_nav_1" class="footer_nav">
+    <li><a href="/syndication/">RSS</a> | </li>
+    <li><a href="http://www.huffpostarabi.com/p/huffpost-arabi-faqs.html">FAQ</a></li>
+</ul>
+<ul id="footer_nav_2" class="footer_nav">
+    <li><a href="http://www.huffpostarabi.com/p/huffpost-arabi-terms.html">User Agreement</a> | </li>
+    <li><a href="http://www.huffpostarabi.com/p/huffpost-arabi-privacy-policy.html">Privacy</a> | </li>
+    <li><a href="http://www.huffpostarabi.com/p/huffpost-arabi-about-us.html">About Us</a> | </li>
+    <li><a href="http://www.huffpostarabi.com/p/huffpost-arabi-contact-us.html">Contact Us</a> | </li>
+    <li><a href="/archive">Archive</a></li>
+</ul>
+<ul id="footer_nav_3" class="footer_nav" syle="direction:rtl;">
+    <li> &quot;The Huffington Post&quot; is a registered trademark of TheHuffingtonPost.com, Inc. All rights reserved. 2016&copy;</li>
+</ul>
+ -->
+ <!--
+        </esi:when>
+        <esi:otherwise>
+-->
+        <ul id="footer_nav_1" class="footer_nav">
+<!--    <li><a href="/advertise">Advertise</a> | </li>-->
+		<li><a href="http://advertising.aol.com/brands/huffington-post" target="_blank">Advertise</a> | </li>
+
+            <li><a href="/makehome/">Make HuffPost your Home Page</a> | </li>
+    
+    <li><a href="/syndication">RSS</a> | </li>
+
+            <li><a href="/jobs/">Careers</a> | </li>
+    
+    <li><a href="http://www.huffingtonpost.com/faq/">FAQ</a></li>
+</ul>
+
+<ul id="footer_nav_2" class="footer_nav">
+    <li><a href="/terms.html">User Agreement</a> | </li>
+    <li><a href="http://privacy.aol.com/">Privacy</a> | </li>   
+    <li><a href="http://www.huffingtonpost.com/p/frequently-asked-question.html">Comment Policy</a> | </li>
+    <li><a href="http://www.huffingtonpost.com/p/huffington-post.html">About Us</a> | </li>
+
+            <li><a href="http://adinfo.aol.com/about-our-ads/" target="_blank">About Our Ads</a> | </li>
+    
+    <li><a href="/contact/">Contact Us</a> | </li>
+    <li><a href="/archive">Archive</a></li>
+</ul>
+<ul id="footer_nav_3" class="footer_nav">
+    <li>Copyright &copy; 2016 TheHuffingtonPost.com, Inc. | </li>
+    <li>&quot;The Huffington Post&quot; is a registered trademark of TheHuffingtonPost.com, Inc. All rights reserved.</li>
+</ul><!--
+        </esi:otherwise>
+    </esi:choose>
+-->
+
+                                <ul id="footer_nav_4" class="footer_nav">
+                        <li>Part of <strong>
+                        AOL Tech                        </strong></li>
+                    </ul>
+                        <br/>
+	</div>
+</div>
+<script type="text/javascript">huff.emit('content/update', '#twitter_promo');</script>
+<script type="text/javascript">
+    //ads processing
+    if (HuffPoUtil.WEDGJE.ad_renders && HuffPoUtil.WEDGJE.ad_renders.length)
+    {
+        for (var i=0; i<HuffPoUtil.WEDGJE.ad_renders.length; i++)
+        {
+            HuffPoUtil.WEDGJE.ad_renders[i]();
+        }
+    }
+</script>
+
+<div style="width:300px" id="ad_store_asset_inserts" class="ad_store "></div><div style="width:300px" id="ad_store_leaderboard_flex" class="ad_store "></div><div style="width:300px" id="ad_store_right_rail_flex" class="ad_store "></div><div style="width:300px" id="ad_store_right_rail_300x250_lower" class="ad_store "></div>
+            <div id="console"></div>
+                <script type="text/javascript">
+                    if(HPAds.ad_check_page_config('asset_inserts'))HPAds.ad_store_push('asset_inserts', '', 300, false, false, false, false);if(HPAds.ad_check_page_config('leaderboard_flex'))HPAds.ad_store_push('leaderboard_flex', '', 300, false, false, false, false);if(HPAds.ad_check_page_config('right_rail_flex'))HPAds.ad_store_push('right_rail_flex', '', 300, false, false, false, false);if(HPAds.ad_check_page_config('right_rail_300x250_lower'))HPAds.ad_store_push('right_rail_300x250_lower', '', 300, false, false, false, false);
+                    HPAds.ad_store_move_to_place(false);
+                    HPAds.page_spots["adtech_header"]=true; HPAds.page_spots["asset_inserts"]=true; HPAds.page_spots["big_news_link"]=true; HPAds.page_spots["leaderboard_flex"]=true; HPAds.page_spots["right_rail_300x250_lower"]=true; HPAds.page_spots["right_rail_flex"]=true; HPAds.page_spots["top_1x1"]=true; 
+                </script>
+	</div> <!-- #wrapper_inner -->
+	</div> <!-- .wrapper_h -->
+    <div id="tfm_skyscraper" class="top_right_skyscraper"></div>
+</div> <!-- #wrapper -->
+
+<!-- Begin:Survey scripts -->
+
+
+<!-- End:Survey scripts -->
+
+<!-- Begin Entry Tweets Updater -->
+<script type="text/javascript">
+    EntryTweets.update();
+</script>
+<!-- End Entry Tweets Updater -->
+
+<!-- Begin comScore Tag -->
+<script type="text/javascript">
+	document.write(unescape("%3Cscript src='" + (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js' %3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+    var comscore_data = {
+            c1:2,
+            c2:6723616,
+            c3:"",
+            c4:"",
+            c5:"science",
+            c6:"",
+            c15:"",
+            options: {
+                url_append: "comscorekw=science"
+            }
+    }
+    COMSCORE.beacon(comscore_data);
+</script>
+<noscript>
+<img src="http://b.scorecardresearch.com/p?c1=2&c2=6723616&c3=&c4=&c5=science&c6=&c15=&cj=1" />
+</noscript>
+<!-- End comScore Tag -->
+    <script type="text/javascript">
+    var HPS = HPTrack.Services;
+    HPS.setOptions('Quantcast', {
+        labels:"Science",
+        qacct:"p-6fTutip1SMLM2"
+    });
+    HPS.trackTo(['Quantcast']);
+    </script>
+    <noscript>
+    <img src="//pixel.quantserve.com/pixel/p-6fTutip1SMLM2.gif?labels=Science" style="display:none" height="1" width="1" alt="Quantcast" />
+    </noscript>
+
+    <script type="text/javascript" src="http://pixel.quantserve.com/seg/p-6fTutip1SMLM2.js"></script>
+
+
+
+<!-- BEGIN Nielsen Tracking -->
+<script type="text/javascript">
+  HPTrack.Services.trackTo(['Nielsen']);
+</script>
+<noscript>
+   <img src="//secure-us.imrworldwide.com/cgi-bin/m?ci=us-703240h&amp;cg=0&amp;cc=1&amp;ts=noscript" width="1" height="1" alt="" />
+</noscript>
+
+<!-- END Nielsen Tracking -->
+
+ 
+
+<div id="parsely-root" style="display: none">
+  <div id="parsely-cfg" data-parsely-site="huffingtonpost.com"></div>
+</div>
+<script>
+(function(s, p, d) {
+  var h=d.location.protocol, i=p+"-"+s,
+      e=d.getElementById(i), r=d.getElementById(p+"-root"),
+      u=h==="https:"?"d1z2jf7jlzjs58.cloudfront.net"
+      :"static."+p+".com";
+  if (e) return;
+  e = d.createElement(s); e.id = i; e.async = true;
+  e.src = h+"//"+u+"/p.js"; r.appendChild(e);
+})("script", "parsely", document);
+</script>
+
+
+<!-- RUM footer -->
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"a2134792db","applicationID":"4004801","transactionName":"YFIDbEBYVhJYURBaXFkYIk1BTVcMFloUHlVFWA9M","queueTime":0,"applicationTime":6220,"ttGuid":"","agentToken":"","atts":"TBUAGghCRRw=","errorBeacon":"bam.nr-data.net","agent":""}</script>
+<!-- Served from: production-mt-wfe-50-87.use1 -->
+
+
+<script type="text/javascript">
+
+    jQuery('body').addClass(HPBrowser.browser_class().toLowerCase() + (HPBrowser.version() + '').replace('.', '-'));
+
+</script>
+
+<div id="ad_bottom_1x1" class="ad_wrapper"><script type='text/javascript'>
+  //<![CDATA[
+    (function(){
+    window.gravityInsightsParams = {
+      'type': 'content',
+      'action': '',
+      'site_guid': '95ec266b244de718b80c652a08af06fa'
+    };
+    var adServerReq,bUrl,doUseGravityUserGuid,includeJs,jq,type,ug,wlPrefix,wlUrl,_ref,_ref1,_ref2;bUrl="https:"===document.location.protocol?"https://b-ssl.grvcdn.com/moth-min.js":"http://b.grvcdn.com/moth-min.js";ug=(doUseGravityUserGuid=!0===gravityInsightsParams.useGravityUserGuid?1:0)?"":gravityInsightsParams.user_guid||(null!=(_ref=/grvinsights=([^;]+)/.exec(document.cookie))?_ref[1]:void 0)||"";wlUrl=(wlPrefix="","");
+    includeJs=function(a){var b;b=document.createElement("script");b.async=!0;b.src=a;a=document.getElementsByTagName("script")[0];return a.parentNode.insertBefore(b,a)};bUrl&&includeJs(bUrl);wlUrl&&(window.gravityInsightsParams.sidebar&&(window.gravityInsightsParams.wlStartTime=(new Date).getTime()),includeJs(wlUrl));})();
+  //]]>
+</script></div><div id="ad_bottom_1x1" class="ad_wrapper"><script>
+var ord = window.ord || Math.floor(Math.random() * 1e16);
+var s = document.createElement('script');
+document.body.appendChild(s);
+s.src = 'http://a02.korrelate.net/a/e/d2a.ads?r=' + window.ord + '&et=a&ago=127&ao=128&px=208&pt=s&lvl=' + HPConfig.current_vertical_name + '&av1=apage';
+</script></div><div id="ad_bottom_1x1" class="ad_wrapper"><script async src="http://plugin.mediavoice.com/mediaconductor/mc.js"></script>
+<script>
+window.mediaconductor=window.mediaconductor||function(){(mediaconductor.q=mediaconductor.q||[]).push(arguments);}
+mediaconductor("init", "d05ce97492f5478d864f1b629b02a278");
+mediaconductor("exec");
+</script></div>
+<script type="text/javascript">huff.use('conf', function(c){ c.set({"mtime":1474689050,"entry":0,"vertical":"science","vertical-id":72,"vertical-name":"","ads\/zone":"","topnav\/version":"2","cookie\/domain":"huffingtonpost.com","websocket\/enabled":false,"websocket\/url":"fiji-production-ws.use1.huffpo.net","websocket\/init":false,"site_blog_id":2,"auth_secure_domain":"secure.huffingtonpost.com","auth_secure_protocol":"https","auth_method":"frame","static_secure_domain":"s-s.huffpost.com","images_secure_domain":"s-i.huffpost.com","images_secure_www_domain":"s-i.huffpost.com","social_tracking":true,"primary_vertical_id":-1,"primary_vertical_name":false,"primary_vertical_facebook_name":"HuffingtonPost","primary_vertical_twitter_name":"HuffingtonPost","current_vertical_facebook_name":"HuffPostScienceTech","current_vertical_twitter_name":"HuffPostScience","vertical\/bignews":"science"}); });</script>
+<!--if user has AOL's referrer we display AOL NavBar -->
+<script>
+window.UNB={config:{referrer:document.referrer,theme:"light",minimumBrowserWidth:320,devId:"sa1quMeQRBVzK6Jb"}};
+</script>
+<script type="text/javascript" src='http://o.aolcdn.com/os/aol/unb.min.js' async>
+
+
+</body>
+</html>

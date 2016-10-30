@@ -1,0 +1,39 @@
+Name: Varsha Chandan Bellara
+USC ID: 3875887109
+News site crawled: http://www.huffingtonpost.com/
+Fetch Statistics 
+================ 
+# fetches attempted: 10000
+# fetches succeeded: 2397
+# fetches aborted: 2753
+# fetches failed: 4850
+Outgoing URLs: 
+ ==============
+Total URLs extracted: 398399
+# unique URLs extracted: 12847
+# unique URLs within News Site: 8545
+# unique URLs outside News Site: 4302
+Status Codes: 
+ =============
+200 OK: 2397
+301 Moved Permanently: 2721
+302 Found: 32
+401 Unauthorized: 0
+403 Forbidden: 0
+404 Not Found: 2
+503 Service Unavailable: 4848
+File Sizes: 
+ ===========
+< 1KB: 3
+1KB ~ <10KB: 4
+10KB ~ <100KB: 37
+100KB ~ <1MB: 2353
+>= 1MB: 0
+Content Types: 
+ ==============
+text/html: 2389
+image/gif: 2
+image/jpeg: 1
+image/png: 5
+image/tif: 0
+application/pdf: 0
